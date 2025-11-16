@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* shimmer skeleton */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.skeleton{
+  position:relative; overflow:hidden; border-radius:0.75rem;
+  background:linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 37%,#f3f4f6 63%);
+  background-size:400% 100%; animation:shimmer 1.4s infinite linear;
+}
+
+#fabEmergency{
+  position: fixed !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  left: auto !important;
+}
+
+
+.pulse{ position:relative }
+.pulse::after{ content:""; position:absolute; inset:-6px; border-radius:999px; border:2px solid #ef4444; opacity:.6; animation:pulse 1.5s infinite }
+@keyframes pulse{ 0%{transform:scale(.9);opacity:.6} 70%{transform:scale(1.2);opacity:.15} 100%{transform:scale(.9);opacity:0} }
+
+/* Navbar Custom Styles */
+.nav-link {
+  @apply px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-pink-600 transition-all duration-300 relative;
+}
+
+.nav-link::after {
+  content: '';
+  @apply absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-rose-600 transition-all duration-300;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  @apply w-3/4;
+}
+
+.nav-text {
+  @apply relative z-10;
+}
+
+/* Mobile menu animation */
+#mobileMenu {
+  transition: all 0.3s ease-in-out;
+}
+
+#mobileMenu.show {
+  display: block;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Doctor Navbar Custom Styles */
+.nav-link-doctor {
+  @apply px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 transition-all duration-300 relative;
+}
+
+.nav-link-doctor::after {
+  content: '';
+  @apply absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-600 transition-all duration-300;
+  transform: translateX(-50%);
+}
+
+.nav-link-doctor:hover::after {
+  @apply w-3/4;
+}
+
+/* Mobile menu animation for doctor */
+#mobileMenuDoctor {
+  transition: all 0.3s ease-in-out;
+}
+
+#mobileMenuDoctor.show {
+  display: block;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+/* Article Carousel Styles */
+#articleTrack {
+  transform: translateX(0%);
+}
+
+.article-indicator.active {
+  @apply bg-pink-600 w-6;
+}
+
+
+/* Custom scrollbar untuk modal emergency */
+#modalEmergency .overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #e5e7eb #f9fafb;
+}
+
+#modalEmergency .overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+#modalEmergency .overflow-y-auto::-webkit-scrollbar-track {
+  background: #f9fafb;
+  border-radius: 3px;
+}
+
+#modalEmergency .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 3px;
+}
+
+#modalEmergency .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+
+

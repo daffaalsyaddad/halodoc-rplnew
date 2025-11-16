@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Halodoc Lite – Kelompok 3</title>
+    <link href="/dist/output.css" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon2.svg" />
+    <link rel="shortcut icon" href="assets/icons/favicon2.svg" />
+  </head>
+  <body class="bg-white text-gray-900" data-page="home">
+    <!-- NAVBAR -->
+    <!-- GANTI NAVBAR YANG SEKARANG DENGAN KODE INI -->
+    <header
+      class="sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-gray-100 shadow-sm"
+    >
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="h-16 flex items-center justify-between">
+          <!-- Logo Section - DIPERBAIKI -->
+          <a href="/" class="flex items-center gap-3 group">
+            <div
+              class="w-8 h-8 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 grid place-items-center text-white font-bold shadow-md transition-transform group-hover:scale-105"
+            >
+              H
+            </div>
+            <div class="flex flex-col">
+              <span
+                class="text-xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent"
+                >halodoc</span
+              >
+              <span class="text-[10px] text-gray-500 -mt-1"
+                >Health Solution</span
+              >
+            </div>
+          </a>
+
+          <!-- Navigation Menu - DIPERBAIKI -->
+          <nav class="hidden lg:flex items-center gap-1">
+            <a href="/" class="nav-link group relative">
+              <span class="nav-text">Beranda</span>
+            </a>
+            <a href="/pages/doctors.html" class="nav-link group relative">
+              <span class="nav-text">Cari Dokter</span>
+            </a>
+            <a href="/pages/pharmacy.html" class="nav-link group relative">
+              <span class="nav-text">Toko Kesehatan</span>
+            </a>
+            <a href="/pages/articles.html" class="nav-link group relative">
+              <span class="nav-text">Artikel</span>
+            </a>
+            <a href="/pages/map.html" class="nav-link group relative">
+              <span class="nav-text">Faskes Terdekat</span>
+            </a>
+
+            <!-- Dropdown Menu untuk Fitur Lainnya -->
+            <div class="relative group">
+              <button class="nav-link flex items-center gap-1">
+                <span class="nav-text">Lainnya</span>
+                <svg
+                  class="w-4 h-4 transition-transform group-hover:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                class="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
+              >
+                <div class="py-2">
+                  <a
+                    href="/pages/bmi.html"
+                    class="block px-4 py-2 text-sm hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                    >Kalkulator BMI</a
+                  >
+                  <a
+                    href="/pages/heart-test.html"
+                    class="block px-4 py-2 text-sm hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                    >Tes Jantung</a
+                  >
+                  <a
+                    href="/pages/depression-test.html"
+                    class="block px-4 py-2 text-sm hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                    >Tes Depresi</a
+                  >
+                  <a
+                    href="/pages/insurance.html"
+                    class="block px-4 py-2 text-sm hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                    >Asuransi</a
+                  >
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          <!-- CTA Buttons - DIPERBAIKI -->
+          <div class="flex items-center gap-3">
+            <!-- Search Icon untuk Mobile/Tablet -->
+            <button
+              class="lg:hidden p-2 text-gray-600 hover:text-pink-600 transition-colors"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+            </button>
+
+            <!-- Doctor Login Button - BARU -->
+            <a
+              href="/pages/doctor-login.html"
+              class="px-4 py-2.5 text-sm font-semibold rounded-xl border-2 border-blue-500 text-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center gap-2"
+            >
+              <span>👨‍⚕️</span>
+              Dokter
+            </a>
+
+            <!-- User Auth Section - Conditional -->
+            <div id="userAuthSection">
+              <a
+                href="/pages/login.html"
+                class="px-5 py-2.5 text-sm font-semibold rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
+              >
+                Masuk
+              </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button
+              id="mobileMenuButton"
+              class="lg:hidden p-2 text-gray-600 hover:text-pink-600 transition-colors"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        id="mobileMenu"
+        class="lg:hidden hidden bg-white border-t border-gray-100 shadow-lg"
+      >
+        <div class="px-4 py-3 space-y-1">
+          <a
+            href="/"
+            class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
+            >Beranda</a
+          >
+          <a
+            href="/pages/doctors.html"
+            class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
+            >Cari Dokter</a
+          >
+          <a
+            href="/pages/pharmacy.html"
+            class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
+            >Toko Kesehatan</a
+          >
+          <a
+            href="/pages/articles.html"
+            class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
+            >Artikel</a
+          >
+          <a
+            href="/pages/map.html"
+            class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
+            >Faskes Terdekat</a
+          >
+          <a
+            href="/pages/bmi.html"
+            class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
+            >Kalkulator BMI</a
+          >
+          <a
+            href="/pages/heart-test.html"
+            class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
+            >Tes Jantung</a
+          >
+          <a
+            href="/pages/depression-test.html"
+            class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
+            >Tes Depresi</a
+          >
+          <a
+            href="/pages/insurance.html"
+            class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
+            >Asuransi</a
+          >
+          <a
+            href="/pages/doctor-login.html"
+            class="block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors font-medium flex items-center gap-2"
+          >
+            <span>👨‍⚕️</span>
+            Login Dokter
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section
+      class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8 grid lg:grid-cols-3 gap-6"
+    >
+      <!-- Banner utama dengan gambar background dari URL -->
+      <div
+        class="lg:col-span-2 h-64 sm:h-80 rounded-2xl text-white p-8 flex items-end bg-cover bg-center"
+        style="
+          background-image: linear-gradient(
+              rgba(0, 0, 0, 0.7),
+              rgba(255, 255, 255, 0.7)
+            ),
+            url('https://farmasi.fmipa.umri.ac.id/wp-content/uploads/2021/01/obat-rasional.jpg');
+        "
+      >
+        <div>
+          <p class="uppercase tracking-wide text-white/80 text-xs">
+            halodoc store
+          </p>
+          <h1 class="text-3xl sm:text-4xl font-bold leading-tight">
+            Beli Produk Kesehatan<br />Jaminan 1 Jam Sampai*
+          </h1>
+          <p class="text-white/85 mt-2 text-sm">
+            *S&K Berlaku — banner dummy presentasi.
+          </p>
+        </div>
+      </div>
+
+      <!-- Banner kedua dengan logo Kemenkes -->
+      <div
+        class="h-64 sm:h-80 rounded-2xl border p-8 flex items-end relative overflow-hidden"
+      >
+        <!-- Background Image -->
+        <img
+          src="https://bblabkesmasbanjarbaru.com/wp-content/uploads/2020/07/cropped-logo-292-kementerian-kesehatan-republik-indonesia-kemenkes.png"
+          alt="Logo Kemenkes RI"
+          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32"
+        />
+        <div class="relative z-10">
+          <h2 class="text-2xl font-semibold">Dianjurkan Kemenkes</h2>
+          <p class="text-gray-600 mt-2 text-sm">
+            Logo Kementerian Kesehatan Republik Indonesia
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHIPS LAYANAN -->
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10">
+      <div class="flex gap-3 overflow-x-auto pb-2">
+        <a
+          href="/pages/doctors.html"
+          class="flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm bg-white"
+          >📲 <span>Chat dengan Dokter</span></a
+        >
+        <a
+          href="/pages/pharmacy.html"
+          class="flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm bg-white"
+          >🛍️ <span>Toko Kesehatan</span></a
+        >
+        <a
+          href="#"
+          class="flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm bg-white"
+          >🏠 <span>Homecare</span></a
+        >
+        <a
+          href="#"
+          class="flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm bg-white"
+          >🛡️ <span>Asuransiku</span></a
+        >
+      </div>
+    </section>
+
+    <!-- PROMO SCROLLER -->
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10">
+      <h3 class="text-2xl font-semibold">Promo & Penawaran Hari Ini</h3>
+      <div class="mt-4 flex gap-4 overflow-x-auto pb-2">
+        <!-- Promo 1: Cashback -->
+        <div
+          class="min-w-[320px] h-40 rounded-2xl bg-cover bg-center relative overflow-hidden"
+          style="background-image: url('img/cashback.png')"
+        >
+          <div class="absolute inset-0 bg-black/40"></div>
+          <div class="relative z-10 p-5 text-white h-full flex items-end">
+            <div>
+              <h4 class="text-xl font-bold">Cashback 100%</h4>
+              <p class="text-sm">Khusus pembelian pertama</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Promo 2: Skincare -->
+        <div
+          class="min-w-[320px] h-40 rounded-2xl bg-cover bg-center relative overflow-hidden"
+          style="background-image: url('img/skincare.png')"
+        >
+          <div class="absolute inset-0 bg-black/40"></div>
+          <div class="relative z-10 p-5 text-white h-full flex items-end">
+            <div>
+              <h4 class="text-xl font-bold">Skincare Hemat</h4>
+              <p class="text-sm">Diskon hingga 50%</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Promo 3: Gratis Ongkir -->
+        <div
+          class="min-w-[320px] h-40 rounded-2xl bg-cover bg-center relative overflow-hidden"
+          style="background-image: url('img/free_ongkir.png')"
+        >
+          <div class="absolute inset-0 bg-black/40"></div>
+          <div class="relative z-10 p-5 text-white h-full flex items-end">
+            <div>
+              <h4 class="text-xl font-bold">Gratis Ongkir</h4>
+              <p class="text-sm">Min. pembelian Rp 50.000</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Promo 4: Tambahan -->
+        <div
+          class="min-w-[320px] h-40 rounded-2xl bg-cover bg-center relative overflow-hidden"
+          style="
+            background-image: url('https://ugm.ac.id/wp-content/uploads/2021/07/23072116269984151905922659-758x510.jpg');
+          "
+        >
+          <div class="absolute inset-0 bg-black/40"></div>
+          <div class="relative z-10 p-5 text-white h-full flex items-end">
+            <div>
+              <h4 class="text-xl font-bold">Konsultasi Gratis</h4>
+              <p class="text-sm">Dengan dokter spesialis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KAMUS + ARTIKEL RINGKAS (pendek) -->
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12">
+      <div
+        class="rounded-3xl bg-gradient-to-b from-rose-50 to-white p-8 border border-rose-100"
+      >
+        <h3 class="text-2xl font-semibold">Telusuri Kamus Kesehatan</h3>
+        <div class="mt-4 flex gap-2 flex-wrap">
+          <a class="px-4 py-2 rounded-full border bg-white hover:bg-gray-50"
+            >Diabetes</a
+          >
+          <a class="px-4 py-2 rounded-full border bg-white hover:bg-gray-50"
+            >Jantung</a
+          >
+          <a class="px-4 py-2 rounded-full border bg-white hover:bg-gray-50"
+            >Kehamilan</a
+          >
+          <a
+            class="px-4 py-2 rounded-full border bg-white hover:bg-gray-50 text-pink-600"
+            href="/pages/articles.html"
+            >Lihat Semua Topik ›</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ARTIKEL POPULER dengan CAROUSEL -->
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-16">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-2xl font-semibold">Artikel Populer</h3>
+        <div class="flex items-center gap-3">
+          <button
+            id="prevArticle"
+            class="w-10 h-10 rounded-full border flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            disabled
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
+            </svg>
+          </button>
+          <button
+            id="nextArticle"
+            class="w-10 h-10 rounded-full border flex items-center justify-center hover:bg-gray-50 transition-colors"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="relative">
+        <!-- Carousel Container -->
+        <div id="articleCarousel" class="overflow-hidden">
+          <div
+            class="flex transition-transform duration-500 ease-in-out"
+            id="articleTrack"
+          >
+            <!-- Slide 1 -->
+            <div
+              class="w-full flex-shrink-0 grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              <a
+                href="/pages/articles.html"
+                class="rounded-2xl border hover:shadow overflow-hidden group"
+              >
+                <div
+                  class="h-40 bg-gradient-to-br from-blue-50 to-cyan-100 relative overflow-hidden"
+                >
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                  ></div>
+                  <img
+                    src="img/pages/imun tubuh.png"
+                    alt="Ilustrasi sistem imun tubuh"
+                    class="w-full object-cover object-center"
+                  />
+                </div>
+                <div class="p-4">
+                  <p
+                    class="font-medium group-hover:text-blue-600 transition-colors"
+                  >
+                    5 Tips Menjaga Imun Tubuh
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">Kesehatan Umum</p>
+                </div>
+              </a>
+              <a
+                href="/pages/articles.html"
+                class="rounded-2xl border hover:shadow overflow-hidden group"
+              >
+                <div
+                  class="h-40 bg-gradient-to-br from-green-50 to-emerald-100 bg-cover bg-center bg-no-repeat"
+                  style="
+                    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK0xDzRYuCtiJm50jpTBhC4_2NKZVdGa2_mg&s');
+                  "
+                ></div>
+                <div class="p-4">
+                  <p
+                    class="font-medium group-hover:text-green-600 transition-colors"
+                  >
+                    Kenali Gejala Diabetes Sejak Dini
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">Penyakit Kronis</p>
+                </div>
+              </a>
+              <a
+                href="/pages/articles.html"
+                class="rounded-2xl border hover:shadow overflow-hidden group"
+              >
+                <div
+                  class="h-40 bg-gradient-to-br from-orange-50 to-amber-100 bg-cover bg-center bg-no-repeat"
+                  style="
+                    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOq-DGdtyAzjd50V1FqWW6KW3TtQ9yuuhzjA&s');
+                  "
+                ></div>
+                <div class="p-4">
+                  <p
+                    class="font-medium group-hover:text-orange-600 transition-colors"
+                  >
+                    Manfaat Vitamin C untuk Daya Tahan Tubuh
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">Vitamin & Suplemen</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- Slide 2 -->
+            <div
+              class="w-full flex-shrink-0 grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              <a
+                href="/pages/articles.html"
+                class="rounded-2xl border hover:shadow overflow-hidden group"
+              >
+                <div
+                  class="h-40 bg-gradient-to-br from-purple-50 to-violet-100 bg-cover bg-center bg-no-repeat"
+                  style="
+                    background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxQTEhUSEhMWFRIXFRcWGBgYFx0YGBgVFhUXFxcVFRcdHiggGBolHRUVITEiJSkrLi4uGB8zODMtNygtLisBCgoKDg0OGhAQGy0lHx0tLS0tLS0rLS8tLS0tLS0tLS0tLS8tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIALcBEwMBIgACEQEDEQH/xAAcAAEAAgIDAQAAAAAAAAAAAAAABQYDBAECBwj/xABLEAABAwIDAwgECgcHAwUAAAABAAIDBBEFEiExQVEGEyJhcYGRoQcyUrEUQlNicpLBwtHSIzNDgqKy8BVEc4OT0+EWVGNkhKPD4v/EABoBAQEBAQEBAQAAAAAAAAAAAAABAgMEBQb/xAArEQACAQMEAQIGAgMAAAAAAAAAAQIDERITMUFRIQRhFCKBkaHwUrEFMkL/2gAMAwEAAhEDEQA/APcUREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQHCIiA5REQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAcIiIDlERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREBwiIgOUREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQHCIiA5REQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAcIiIDCKkcCuwnb/QVO5G8sBXse5sD48hDTdwcCSCbNNgdOzeFZBMOvw/BWwN4TN4rtzg4jxWjzg4+RXBkHX4JYG/nHEJmHFRpmbwPfYfauhmv6o8NfM2CuJLksHLlQlK4ufZrxm35Te30nd2xTLNmu1RqwTudkRFChEXlfpc9I76JwpKQ2qC0OfJYO5trr5WsB0zmwNyCACOOgHpVdiEULS+aRkbRtL3BoHDaVQMZ9MtFE/JG2ScDa5tg3sBOpK8Crqt80jppnl8rzdznak9unktfN4K2B9ARemmidYFkzOstaQNOp3FWzkvyypq4ubC452i9iLZm+02+pAPeNOK+UntspHA8Ukge18b3Me03BBtZLA+vkVT9HvK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');
+                  "
+                ></div>
+                <div class="p-4">
+                  <p
+                    class="font-medium group-hover:text-purple-600 transition-colors"
+                  >
+                    Cara Mengatasi Stress di Tempat Kerja
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">Kesehatan Mental</p>
+                </div>
+              </a>
+              <a
+                href="/pages/articles.html"
+                class="rounded-2xl border hover:shadow overflow-hidden group"
+              >
+                <div
+                  class="h-40 bg-gradient-to-br from-red-50 to-rose-100 bg-cover bg-top bg-no-repeat"
+                  style="
+                    background-image: url('https://sadapandroid.com/storage/thumbnails/olahraga-ringan-710x400-999.jpg');
+                  "
+                ></div>
+                <div class="p-4">
+                  <p
+                    class="font-medium group-hover:text-red-600 transition-colors"
+                  >
+                    Pentingnya Olahraga Rutin untuk Kesehatan Jantung
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">Olahraga</p>
+                </div>
+              </a>
+              <a
+                href="/pages/articles.html"
+                class="rounded-2xl border hover:shadow overflow-hidden group"
+              >
+                <div
+                  class="h-40 bg-gradient-to-br from-yellow-50 to-amber-100 bg-cover bg-center bg-no-repeat"
+                  style="
+                    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLNf8c5LTb0XaUo7Rr_fzqrZHDP25zCgUwpg&s');
+                  "
+                ></div>
+                <div class="p-4">
+                  <p
+                    class="font-medium group-hover:text-yellow-600 transition-colors"
+                  >
+                    Makanan Sehat untuk Keluarga
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">Nutrisi</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel Indicators -->
+        <div class="flex justify-center gap-2 mt-6">
+          <button
+            class="article-indicator w-3 h-3 rounded-full bg-pink-300 transition-all duration-300"
+            data-slide="0"
+          ></button>
+          <button
+            class="article-indicator w-3 h-3 rounded-full bg-gray-300 transition-all duration-300"
+            data-slide="1"
+          ></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUK PILIHAN -->
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-16">
+      <h3 class="text-2xl font-semibold mb-4">Produk Pilihan</h3>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-center bg-no-repeat"
+            style="
+              background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmW1UtCkVlDBAb1yqDyEe6vZtCUytkHUcu8g&s');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Paracetamol 500mg</p>
+          <p class="text-sm text-gray-600">Rp 15.000</p>
+        </div>
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-top bg-no-repeat"
+            style="
+              background-image: url('https://www.sidomuncul.co.id/assets/images/product/produk-c1000-lemon.png');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Vitamin C 1000mg</p>
+          <p class="text-sm text-gray-600">Rp 35.000</p>
+        </div>
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-center bg-no-repeat"
+            style="
+              background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf0sauHdWNJp4nefVpt1iIIaSR6_U9bNn55w&s');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Masker Medis (50 pcs)</p>
+          <p class="text-sm text-gray-600">Rp 50.000</p>
+        </div>
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-top bg-no-repeat"
+            style="
+              background-image: url('https://m.media-amazon.com/images/I/61cTdmnpbmL.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_PIRIOFOUR-medium,BottomLeft,30,-20_ZJPHNwYW4gZm9yZWdyb3VuZD0iIzU2NTk1OSIgZm9udD0iQW1hem9uRW1iZXIgNTAiID4xOTM8L3NwYW4+,500,900,420,420,0,0_QL100_.jpg');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Hand Sanitizer 100ml</p>
+          <p class="text-sm text-gray-600">Rp 20.000</p>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 my-10">
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-center bg-no-repeat"
+            style="
+              background-image: url('https://selesfarma.co.id/wp-content/uploads/2020/04/Paracetamol.jpg');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Paracetamol 500mg</p>
+          <p class="text-sm text-gray-600">Rp 15.000</p>
+        </div>
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-no-repeat"
+            style="
+              background-image: url('https://www.sidomuncul.co.id/assets/images/product/sido-muncul-c-1000-anggur-muscat.png');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Vitamin C 1000mg</p>
+          <p class="text-sm text-gray-600">Rp 35.000</p>
+        </div>
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-center bg-no-repeat"
+            style="
+              background-image: url('https://smb-padiumkm-images-public-prod.oss-ap-southeast-5.aliyuncs.com/product/image/12092025/631a57155b9755003d275fee/68c3c0831a5733c90444e142/f715821db7ce2309d46c77aaf0b42a.png?x-oss-process=image/resize,m_pad,w_432,h_432/quality,Q_70');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Masker Medis (50 pcs)</p>
+          <p class="text-sm text-gray-600">Rp 50.000</p>
+        </div>
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-top bg-no-repeat"
+            style="
+              background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsx3EpE93Be_dhaQ31M13y9Uan82CzKkSRGg&s');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Hand Sanitizer 100ml</p>
+          <p class="text-sm text-gray-600">Rp 20.000</p>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 my-10">
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-center bg-no-repeat"
+            style="
+              background-image: url('https://lirp.cdn-website.com/0ead930f/dms3rep/multi/opt/PARACETAMOL-500-MG-TABLET-640w.jpg');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Paracetamol 500mg</p>
+          <p class="text-sm text-gray-600">Rp 15.000</p>
+        </div>
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-no-repeat"
+            style="
+              background-image: url('https://ziololek.pl/wp-content/uploads/2020/06/22-Z-127-645x510-5.png');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Vitamin C 1000mg</p>
+          <p class="text-sm text-gray-600">Rp 35.000</p>
+        </div>
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-center bg-no-repeat"
+            style="
+              background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8gZkGW47O12ldEbx-SY7ukqrxavKT35_QhQ&s');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Masker Medis (50 pcs)</p>
+          <p class="text-sm text-gray-600">Rp 50.000</p>
+        </div>
+        <div class="rounded-2xl border p-4 hover:shadow">
+          <div
+            class="h-32 bg-gray-100 rounded-lg bg-cover bg-top bg-no-repeat"
+            style="
+              background-image: url('https://m.media-amazon.com/images/I/51Q5cKguQQL.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_PIRIOTHREEANDHALF-medium,BottomLeft,30,-20_ZJPHNwYW4gZm9yZWdyb3VuZD0iIzU2NTk1OSIgZm9udD0iQW1hem9uRW1iZXIgNTAiID42PC9zcGFuPg==,500,900,420,420,0,0_QL100_.jpg');
+            "
+          ></div>
+          <p class="mt-2 font-medium">Hand Sanitizer 100ml</p>
+          <p class="text-sm text-gray-600">Rp 20.000</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONI -->
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-16">
+      <h3 class="text-2xl font-semibold mb-4">Apa Kata Mereka</h3>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="rounded-2xl border p-4 shadow-sm">
+          <p class="italic">
+            “Dokternya ramah, respon cepat. Sangat membantu!”
+          </p>
+          <p class="mt-3 font-semibold">– Siti, 24th</p>
+        </div>
+        <div class="rounded-2xl border p-4 shadow-sm">
+          <p class="italic">“Obat sampai dalam 1 jam. Mantap!”</p>
+          <p class="mt-3 font-semibold">– Budi, 30th</p>
+        </div>
+        <div class="rounded-2xl border p-4 shadow-sm">
+          <p class="italic">“Fitur emergency button sangat berguna.”</p>
+          <p class="mt-3 font-semibold">– Andi, 28th</p>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6 my-10">
+        <div class="rounded-2xl border p-4 shadow-sm">
+          <p class="italic">
+            “Dokternya ramah, respon cepat. Sangat membantu!”
+          </p>
+          <p class="mt-3 font-semibold">– Siti, 24th</p>
+        </div>
+        <div class="rounded-2xl border p-4 shadow-sm">
+          <p class="italic">“Obat sampai dalam 1 jam. Mantap!”</p>
+          <p class="mt-3 font-semibold">– Budi, 30th</p>
+        </div>
+        <div class="rounded-2xl border p-4 shadow-sm">
+          <p class="italic">“Fitur emergency button sangat berguna.”</p>
+          <p class="mt-3 font-semibold">– Andi, 28th</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-16 mb-16">
+      <h3 class="text-2xl font-semibold mb-4">FAQ</h3>
+      <div class="space-y-3">
+        <details class="rounded-lg border p-4">
+          <summary class="font-medium cursor-pointer">
+            Bagaimana cara konsultasi dengan dokter?
+          </summary>
+          <p class="mt-2 text-sm text-gray-600">
+            Pilih menu "Cari Dokter", lalu tekan tombol "Mulai Chat".
+          </p>
+        </details>
+        <details class="rounded-lg border p-4">
+          <summary class="font-medium cursor-pointer">
+            Berapa lama obat diantar?
+          </summary>
+          <p class="mt-2 text-sm text-gray-600">
+            Pengantaran obat biasanya dalam 1 jam setelah pemesanan.
+          </p>
+        </details>
+        <details class="rounded-lg border p-4">
+          <summary class="font-medium cursor-pointer">
+            Apakah aplikasi ini gratis?
+          </summary>
+          <p class="mt-2 text-sm text-gray-600">
+            Ya, semua fitur dasar gratis digunakan.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10">
+      <div class="flex gap-3">
+        <a
+          href="/pages/pharmacy.html"
+          class="px-4 py-2 rounded-xl border text-pink-600 border-pink-600"
+          >Beli Obat</a
+        >
+        <a
+          href="/pages/doctors.html"
+          class="px-4 py-2 rounded-xl bg-pink-600 text-white"
+          >Chat dengan Dokter</a
+        >
+        <a href="/pages/map.html" class="px-4 py-2 rounded-xl border"
+          >Faskes Terdekat</a
+        >
+      </div>
+    </section>
+
+    <!-- FLOATING EMERGENCY -->
+    <button
+      id="fabEmergency"
+      aria-label="Buka menu darurat"
+      class="pulse fixed z-[9999] flex items-center gap-2 rounded-full bg-red-500 hover:bg-red-600 text-white px-4 h-12 shadow-lg"
+      style="right: 24px; bottom: 24px; left: auto"
+    >
+      🚨 <span class="font-semibold">Layanan Darurat</span>
+    </button>
+
+    <!-- MODAL LAYANAN DARURAT - DENGAN SCROLL -->
+    <div id="modalEmergency" class="hidden fixed inset-0 z-50">
+      <div class="absolute inset-0 bg-black/40" data-close-emergency></div>
+      <div
+        class="relative mx-auto mt-4 mb-4 max-w-md h-[95vh] flex flex-col rounded-2xl bg-white shadow-xl"
+      >
+        <!-- Header - Sticky -->
+        <div class="flex-shrink-0 bg-white border-b border-gray-100 p-6">
+          <!-- STEP 1: Pilih Daerah -->
+          <div id="emergencyStep1">
+            <h4 class="text-xl font-bold text-gray-900">
+              Pilih Daerah Darurat
+            </h4>
+            <p class="text-gray-600 mt-1 text-sm">
+              Pilih daerah untuk melihat nomor layanan darurat setempat.
+            </p>
+          </div>
+
+          <!-- STEP 2: Detail Nomor Darurat -->
+          <div id="emergencyStep2" class="hidden">
+            <div class="flex items-center gap-3">
+              <button
+                id="backToRegions"
+                class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors"
+              >
+                <svg
+                  class="w-5 h-5 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 19l-7-7 7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div class="min-w-0">
+                <h4
+                  class="text-xl font-bold text-gray-900 truncate"
+                  id="regionTitle"
+                >
+                  Layanan Darurat
+                </h4>
+                <p
+                  class="text-gray-600 text-sm mt-1 truncate"
+                  id="regionSubtitle"
+                >
+                  Nomor darurat penting
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Area - Scrollable -->
+        <div class="flex-1 overflow-hidden">
+          <div class="h-full overflow-y-auto">
+            <div class="p-6">
+              <!-- STEP 1: Daftar Daerah -->
+              <div id="emergencyStep1Content">
+                <div class="space-y-3">
+                  <button
+                    class="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-pink-200 hover:bg-pink-50 transition-all duration-200 emergency-region group"
+                    data-region="jakarta"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <span
+                          class="font-semibold text-gray-900 group-hover:text-pink-600"
+                          >DKI Jakarta</span
+                        >
+                        <p class="text-sm text-gray-600 mt-1">
+                          Ibu Kota Negara
+                        </p>
+                      </div>
+                      <svg
+                        class="w-5 h-5 text-gray-400 group-hover:text-pink-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </button>
+
+                  <button
+                    class="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-pink-200 hover:bg-pink-50 transition-all duration-200 emergency-region group"
+                    data-region="jawa-barat"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <span
+                          class="font-semibold text-gray-900 group-hover:text-pink-600"
+                          >Jawa Barat</span
+                        >
+                        <p class="text-sm text-gray-600 mt-1">
+                          Bandung & sekitarnya
+                        </p>
+                      </div>
+                      <svg
+                        class="w-5 h-5 text-gray-400 group-hover:text-pink-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </button>
+
+                  <button
+                    class="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-pink-200 hover:bg-pink-50 transition-all duration-200 emergency-region group"
+                    data-region="jawa-tengah"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <span
+                          class="font-semibold text-gray-900 group-hover:text-pink-600"
+                          >Jawa Tengah</span
+                        >
+                        <p class="text-sm text-gray-600 mt-1">
+                          Semarang, Yogyakarta
+                        </p>
+                      </div>
+                      <svg
+                        class="w-5 h-5 text-gray-400 group-hover:text-pink-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </button>
+
+                  <button
+                    class="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-pink-200 hover:bg-pink-50 transition-all duration-200 emergency-region group"
+                    data-region="riau"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <span
+                          class="font-semibold text-gray-900 group-hover:text-pink-600"
+                          >Riau</span
+                        >
+                        <p class="text-sm text-gray-600 mt-1">
+                          Pekanbaru & sekitarnya
+                        </p>
+                      </div>
+                      <svg
+                        class="w-5 h-5 text-gray-400 group-hover:text-pink-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- STEP 2: Daftar Nomor Darurat -->
+              <div id="emergencyStep2Content" class="hidden">
+                <div class="space-y-4" id="emergencyNumbers">
+                  <!-- diisi oleh JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer - Sticky -->
+        <div class="flex-shrink-0 bg-white border-t border-gray-100 p-4">
+          <button
+            class="w-full py-3 px-4 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors font-medium"
+            data-close-emergency
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER GLOBAL -->
+    <footer class="mt-16 border-t bg-gradient-to-b from-white to-rose-50">
+      <div
+        class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+      >
+        <div>
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-full bg-pink-600 grid place-items-center text-white font-bold"
+            >
+              u
+            </div>
+            <span class="text-2xl font-semibold">halodoc</span>
+          </div>
+          <div class="mt-4 space-y-2 text-sm text-gray-600">
+            <p>help@halodoc.com</p>
+            <p>021-5095-9900</p>
+          </div>
+          <div class="mt-4 flex gap-3">
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
+              >📷</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
+              >🎵</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
+              >▶️</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
+              >𝕏</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
+              >f</a
+            >
+          </div>
+        </div>
+
+        <div>
+          <p class="font-semibold">Bantuan & Panduan</p>
+          <ul class="mt-3 space-y-2 text-sm text-gray-600">
+            <li><a href="#" class="hover:text-pink-600">Pusat Bantuan</a></li>
+            <li>
+              <a href="#" class="hover:text-pink-600">Syarat & Ketentuan</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-pink-600">Kebijakan Privasi</a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="font-semibold">Halodoc</p>
+          <ul class="mt-3 space-y-2 text-sm text-gray-600">
+            <li><a href="#" class="hover:text-pink-600">Tentang Kami</a></li>
+            <li>
+              <a href="/pages/articles.html" class="hover:text-pink-600"
+                >Kamus/Artikel Kesehatan</a
+              >
+            </li>
+            <li>
+              <a href="/pages/pharmacy.html" class="hover:text-pink-600"
+                >Promo Toko Kesehatan</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="font-semibold">Karier & Kolaborasi</p>
+          <ul class="mt-3 space-y-2 text-sm text-gray-600">
+            <li><a href="#" class="hover:text-pink-600">Karier</a></li>
+            <li>
+              <a href="#" class="hover:text-pink-600">Affiliate Program</a>
+            </li>
+            <li><a href="#" class="hover:text-pink-600">Bug Bounty</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t">
+        <div
+          class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 text-xs text-gray-500 flex items-center justify-between"
+        >
+          <p>© 2025, by Kelompok 3. Tidak untuk komersial.</p>
+          <p>Didukung oleh Kemenkes</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>

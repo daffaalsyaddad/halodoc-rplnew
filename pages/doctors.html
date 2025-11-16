@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cari Dokter – Halodoc Lite</title>
+    <link href="/dist/output.css" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon2.svg" />
+    <link rel="shortcut icon" href="../assets/icons/favicon2.svg" />
+    <style>
+      /* Style untuk navbar yang lebih compact */
+      .compact-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding: 0.5rem 0;
+        scrollbar-width: none; /* Firefox */
+      }
+      .compact-nav::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+      }
+      .nav-item {
+        white-space: nowrap;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        transition: all 0.2s;
+      }
+      .nav-item:hover {
+        background-color: #f3f4f6;
+      }
+      .nav-item.active {
+        background-color: #fdf2f8;
+        color: #db2777;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-gray-900" data-page="doctors">
+    <header class="border-b">
+      <div class="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
+        <a href="/" class="font-semibold text-xl text-pink-600">halodoc</a>
+        
+        <!-- Navbar Compact -->
+        <nav class="compact-nav flex-1 mx-4">
+          <a href="/" class="nav-item">Beranda</a>
+          <a href="/pages/doctors.html" class="nav-item active">Cari Dokter</a>
+          <a href="/pages/pharmacy.html" class="nav-item">Toko</a>
+          <a href="/pages/articles.html" class="nav-item">Artikel</a>
+          <a href="/pages/map.html" class="nav-item">Faskes</a>
+          <a href="/pages/bmi.html" class="nav-item">BMI</a>
+          <a href="/pages/heart-test.html" class="nav-item">Tes Jantung</a>
+          <a href="/pages/depression-test.html" class="nav-item">Tes Depresi</a>
+          <a href="/pages/insurance.html" class="nav-item">Asuransi</a>
+        </nav>
+
+        <!-- DOKTER BUTTON + USER AUTH SECTION -->
+        <div class="flex items-center gap-2">
+          <!-- Doctor Login Button -->
+          <a
+            href="/pages/doctor-login.html"
+            class="px-3 py-1.5 text-sm font-semibold rounded-lg border border-blue-500 text-blue-600 hover:bg-blue-50 transition-all flex items-center gap-1"
+          >
+            <span>👨‍⚕️</span>
+            Dokter
+          </a>
+
+          <!-- User Auth Section - Conditional -->
+          <div id="userAuthSection">
+            <a
+              href="/pages/login.html"
+              class="text-sm px-3 py-1.5 rounded-lg bg-pink-600 text-white hover:bg-pink-700 transition-colors"
+              >Masuk</a
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 py-6">
+      <div class="rounded-2xl border p-4">
+        <div class="flex flex-col md:flex-row gap-3">
+          <input
+            class="flex-1 rounded-xl border px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
+            placeholder="Cari nama dokter/spesialis..."
+          />
+          <select class="rounded-xl border px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors">
+            <option>Semua Spesialis</option>
+            <option>Sp. Anak</option>
+            <option>Sp. Kulit</option>
+            <option>Sp. Mata</option>
+          </select>
+          <select class="rounded-xl border px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors">
+            <option>Semua Jadwal</option>
+            <option>Tersedia Sekarang</option>
+            <option>Malam Ini</option>
+          </select>
+        </div>
+      </div>
+
+      <h2 class="mt-6 text-xl font-semibold">Dokter Tersedia</h2>
+      <!-- HOLDER: JS akan render skeleton lalu list dokter -->
+      <div class="mt-4" data-skeleton-holder></div>
+    </main>
+
+    <!-- FOOTER GLOBAL -->
+    <footer class="mt-16 border-t bg-gradient-to-b from-white to-rose-50">
+      <div
+        class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+      >
+        <div>
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-full bg-pink-600 grid place-items-center text-white font-bold"
+            >
+              u
+            </div>
+            <span class="text-2xl font-semibold">halodoc</span>
+          </div>
+          <div class="mt-4 space-y-2 text-sm text-gray-600">
+            <p>help@halodoc.com</p>
+            <p>021-5095-9900</p>
+          </div>
+          <div class="mt-4 flex gap-3">
+            <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors"
+              >📷</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors"
+              >🎵</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors"
+              >▶️</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors"
+              >𝕏</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors"
+              >f</a
+            >
+          </div>
+        </div>
+
+        <div>
+          <p class="font-semibold">Bantuan & Panduan</p>
+          <ul class="mt-3 space-y-2 text-sm text-gray-600">
+            <li><a href="#" class="hover:text-pink-600 transition-colors">Pusat Bantuan</a></li>
+            <li>
+              <a href="#" class="hover:text-pink-600 transition-colors">Syarat & Ketentuan</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-pink-600 transition-colors">Kebijakan Privasi</a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="font-semibold">Halodoc</p>
+          <ul class="mt-3 space-y-2 text-sm text-gray-600">
+            <li><a href="#" class="hover:text-pink-600 transition-colors">Tentang Kami</a></li>
+            <li>
+              <a href="/pages/articles.html" class="hover:text-pink-600 transition-colors"
+                >Kamus/Artikel Kesehatan</a
+              >
+            </li>
+            <li>
+              <a href="/pages/pharmacy.html" class="hover:text-pink-600 transition-colors"
+                >Promo Toko Kesehatan</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="font-semibold">Karier & Kolaborasi</p>
+          <ul class="mt-3 space-y-2 text-sm text-gray-600">
+            <li><a href="#" class="hover:text-pink-600 transition-colors">Karier</a></li>
+            <li>
+              <a href="#" class="hover:text-pink-600 transition-colors">Affiliate Program</a>
+            </li>
+            <li><a href="#" class="hover:text-pink-600 transition-colors">Bug Bounty</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t">
+        <div
+          class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 text-xs text-gray-500 flex items-center justify-between"
+        >
+          <p>
+            © 2016–<span id="yearNow"></span>, Prototype akademik Kelompok 3.
+            Tidak untuk komersial.
+          </p>
+          <p>Dianjurkan (dummy) • Kemenkes</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script>
+      // Script untuk highlight halaman aktif
+      document.addEventListener('DOMContentLoaded', function() {
+        const currentPage = window.location.pathname;
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        navItems.forEach(item => {
+          const href = item.getAttribute('href');
+          if (currentPage.includes(href) && href !== '/') {
+            item.classList.add('active');
+          } else if (currentPage === '/' && href === '/') {
+            item.classList.add('active');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
