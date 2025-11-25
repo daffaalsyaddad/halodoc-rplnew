@@ -6,15 +6,28 @@ function renderUserInNavbar() {
   const user = getUser();
 
   if (user) {
-    // User sudah login - tampilkan nama user
+    // Tentukan nama yang ditampilkan:
+    // 1. Pakai nama dari profile (fullName / name)
+    // 2. Kalau belum ada, pakai "Pasien (nomor)"
+    let displayName = "";
+
+    if (user.fullName && user.fullName.trim() !== "") {
+      displayName = user.fullName.trim();
+    } else if (user.name && user.name.trim() !== "") {
+      displayName = user.name.trim();
+    } else if (user.phoneNumber) {
+      displayName = `Pasien (${user.phoneNumber})`;
+    } else {
+      displayName = "Pasien";
+    }
+
     userAuthSection.innerHTML = `
       <div class="flex items-center gap-3">
-        <span class="text-sm text-gray-700">Halo, <strong>${user.name}</strong></span>
+        <span class="text-sm text-gray-700">Halo, <strong>${displayName}</strong></span>
         <a href="/pages/profile.html" class="px-4 py-2 rounded-xl border text-sm hover:bg-gray-50 transition-colors">Profile</a>
       </div>
     `;
   } else {
-    // User belum login - tampilkan button masuk
     userAuthSection.innerHTML = `
       <a href="/pages/login.html" class="px-5 py-2.5 text-sm font-semibold rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
         Masuk
@@ -60,10 +73,17 @@ function showToast(msg = "Berhasil", ms = 1800) {
 
 /* ========= Active navbar highlight (kalau ada nav) ========= */
 (function setActiveNav() {
-  const path = location.pathname.replace(/\/index\.html$/, "/");
+  // Ambil nama file halaman sekarang, contoh: "heart-test.html"
+  const current = location.pathname.split("/").pop();
+
   document.querySelectorAll("header nav a").forEach((a) => {
-    const href = new URL(a.href, location.origin).pathname;
-    if (href === path) a.classList.add("text-pink-600", "font-semibold");
+    // Ambil nama file dari href navbar
+    const target = a.getAttribute("href").split("/").pop();
+
+    // Jika sama, jadikan aktif (warna biru)
+    if (current === target) {
+      a.classList.add("text-blue-600", "font-semibold");
+    }
   });
 })();
 
@@ -96,14 +116,15 @@ function clearUser() {
   localStorage.removeItem(USER_KEY);
 }
 
-/* Page: login */
+/* Page: login – pakai Nomor Telepon + Kode OTP */
+
 (function loginPage() {
   if (!document.body.matches('[data-page="login"]')) return;
   const form = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
   const errorText = document.getElementById("errorText");
 
-  // Tambahkan element error jika belum ada
+  // Kalau belum ada box error, buat
   if (!loginError) {
     const errorDiv = document.createElement("div");
     errorDiv.id = "loginError";
@@ -115,24 +136,28 @@ function clearUser() {
 
   form?.addEventListener("submit", (e) => {
     e.preventDefault();
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value.trim();
 
-    // Validasi credential khusus
-    if (email === "daffaalsyaddad@gmail.com" && password === "pasien123") {
-      setUser({
-        name: "Daffa Al Syaddad",
-        email: email,
-        ts: Date.now(),
-      });
-      showToast("Login berhasil! Selamat datang Daffa");
-      setTimeout(() => (location.href = "/"), 600);
-    } else {
-      // Login gagal
-      errorText.textContent =
-        "Email atau password salah. Gunakan akun demo yang tersedia.";
-      loginError.classList.remove("hidden");
+    const phone = document.getElementById("loginPhone").value.trim();
+    const otp = document.getElementById("loginOtp").value.trim();
+
+    // Validasi sederhana (boleh asal-asalan tapi tidak kosong)
+    if (!phone || !otp) {
+      errorText.textContent = "Nomor telepon dan kode OTP wajib diisi.";
+      document.getElementById("loginError").classList.remove("hidden");
+      return;
     }
+
+    // Simpan user ke localStorage
+    setUser({
+      // default: nama awal "Pasien (nomor)" — nanti bisa diubah di profile
+      fullName: `Pasien (${phone})`,
+      phoneNumber: phone,
+      loginMethod: "phone-otp",
+      ts: Date.now(),
+    });
+
+    showToast("Login berhasil!");
+    setTimeout(() => (location.href = "/"), 600);
   });
 })();
 
@@ -166,9 +191,9 @@ function clearUser() {
 const DOCTOR_KEY = "hl_doctor_session";
 const DOCTOR_ACCOUNTS = [
   {
-    email: "dokter.andi@halodoc.com",
+    email: "dokter.daffa@halodoc.com",
     password: "dokter123",
-    name: "dr. Andi, Sp.A",
+    name: "dr. Daffa, Sp.A",
     specialization: "Spesialis Anak",
     hospital: "RS Awal Bros Pekanbaru",
   },
@@ -622,7 +647,12 @@ const doctorsData = [
     spec: "Sp. Anak",
     avail: "Tersedia sekarang",
     badge: "text-green-600",
-    image: "/img/dokter/Dok.daffa.png", // Tambahkan URL gambar
+    image: "/img/dokter/Dok.daffa.png",
+    experience:
+      "5 tahun pengalaman sebagai dokter anak. Pernah bekerja di RS Awal Bros Pekanbaru dan Klinik Utama Mandiri.",
+    workplaces: "RS Awal Bros Pekanbaru, Klinik Utama Mandiri",
+    education:
+      "S.Ked & Profesi Dokter – Universitas Indonesia; Spesialis Anak – Universitas Airlangga.",
   },
   {
     name: "dr. Jenny, Sp.M",
@@ -630,6 +660,11 @@ const doctorsData = [
     avail: "Besok pagi",
     badge: "text-gray-600",
     image: "/img/dokter/Dokk.jenny.png",
+    experience:
+      "4 tahun pengalaman menangani keluhan mata. Berpengalaman di RSUD Arifin Achmad dan Klinik Mata Sehati.",
+    workplaces: "RSUD Arifin Achmad, Klinik Mata Sehati",
+    education:
+      "S.Ked & Profesi Dokter – Universitas Andalas; Spesialis Mata – Universitas Gadjah Mada.",
   },
   {
     name: "dr. Gilang, Sp.KK",
@@ -637,6 +672,11 @@ const doctorsData = [
     avail: "Tersedia malam ini",
     badge: "text-yellow-600",
     image: "/img/dokter/Dok.gilang.png",
+    experience:
+      "6 tahun pengalaman sebagai dokter kulit & kelamin. Pernah praktik di RS Graha Sehat dan Klinik Estetika Dermacare.",
+    workplaces: "RS Graha Sehat, Klinik Estetika Dermacare",
+    education:
+      "S.Ked & Profesi Dokter – Universitas Diponegoro; Spesialis Kulit & Kelamin – Universitas Indonesia.",
   },
   {
     name: "dr. Bilbina, Sp.KK",
@@ -644,18 +684,49 @@ const doctorsData = [
     avail: "Tersedia malam ini",
     badge: "text-yellow-600",
     image: "/img/dokter/Dokk.bilbina.png",
+    experience:
+      "3 tahun pengalaman menangani masalah kulit remaja & dewasa. Berpengalaman di RS Santa Maria Pekanbaru dan klinik kecantikan.",
+    workplaces: "RS Santa Maria Pekanbaru, Klinik Kecantikan DermaGlow",
+    education:
+      "S.Ked & Profesi Dokter – Universitas Riau; Spesialis Kulit & Kelamin – Universitas Hasanuddin.",
   },
 ];
 
 function renderDoctors(list) {
+  // Jika tidak ada dokter yang ditemukan
+  if (list.length === 0) {
+    return `
+      <div class="text-center py-12">
+        <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+          <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">Dokter Tidak Tersedia</h3>
+        <p class="text-gray-600 mb-4">Maaf, dokter yang Anda cari tidak ditemukan.</p>
+        <div class="space-y-3 max-w-md mx-auto">
+          <button class="w-full py-3 px-4 rounded-xl bg-pink-600 text-white hover:bg-pink-700 transition-colors reset-search">
+            🔍 Cari Dokter Lain
+          </button>
+          <button class="w-full py-3 px-4 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors show-all-doctors">
+            👨‍⚕️ Lihat Semua Dokter
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // Jika ada dokter yang ditemukan - HAPUS TOMBOL CHAT DI CARD
   return `
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       ${list
         .map(
           (d) => `
-        <div class="rounded-2xl border p-4 hover:shadow">
+        <div 
+          class="rounded-2xl border p-4 hover:shadow transition-all duration-200 cursor-pointer doctor-card"
+          data-doc-name="${d.name}"
+        >
           <div class="flex items-center gap-3">
-            <!-- Ganti div kosong dengan img -->
             <img 
               src="${d.image}" 
               alt="${d.name}"
@@ -668,9 +739,7 @@ function renderDoctors(list) {
             </div>
           </div>
           <div class="mt-3 text-sm ${d.badge}">${d.avail}</div>
-          <a href="/pages/chat.html?doc=${encodeURIComponent(
-            d.name
-          )}" class="mt-3 w-full inline-flex justify-center rounded-xl bg-pink-600 text-white py-2">Mulai Chat</a>
+          <!-- TOMBOL CHAT DIHAPUS DARI CARD -->
         </div>
       `
         )
@@ -686,7 +755,6 @@ function mountSkeleton(holder, count = 6) {
           () => `
         <div class="rounded-2xl border p-4">
           <div class="flex items-center gap-3">
-            <!-- Ganti skeleton jadi bentuk lingkaran -->
             <div class="w-12 h-12 rounded-full skeleton"></div>
             <div class="flex-1">
               <div class="h-3 w-32 skeleton mb-2"></div>
@@ -702,84 +770,357 @@ function mountSkeleton(holder, count = 6) {
 }
 
 /* Doctors page init */
+/* Doctors page init */
 (function doctorsPage() {
   if (!document.body.matches('[data-page="doctors"]')) return;
-  const holder = document.querySelector("[data-skeleton-holder]");
-  mountSkeleton(holder);
-  setTimeout(() => (holder.innerHTML = renderDoctors(doctorsData)), 700);
 
-  // filter simple
-  const [search, specSel, timeSel] =
-    document.querySelectorAll(".rounded-xl.border");
+  const holder = document.querySelector("[data-skeleton-holder]");
+  const search = document.querySelector(
+    'input[placeholder*="Cari nama dokter"]'
+  );
+  const specSel = document.querySelector("select:first-of-type");
+  const timeSel = document.querySelector("select:last-of-type");
+
+  // Elemen modal detail
+  const doctorModal = document.getElementById("doctorDetailModal");
+  const detailName = document.getElementById("detailName");
+  const detailSpec = document.getElementById("detailSpec");
+  const detailPhoto = document.getElementById("detailPhoto");
+  const detailExperience = document.getElementById("detailExperience");
+  const detailEducation = document.getElementById("detailEducation");
+  const detailWorkplaces = document.getElementById("detailWorkplaces");
+  const detailChatLink = document.getElementById("detailChatLink");
+
+  // ====== MODAL CHAT BARU ======
+  const chatModal = document.createElement("div");
+  chatModal.id = "chatModal";
+  chatModal.className =
+    "fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden";
+  chatModal.innerHTML = `
+    <div class="bg-white rounded-2xl max-w-md w-full mx-4 max-h-[80vh] flex flex-col">
+      <div class="border-b p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img id="chatDoctorPhoto" src="" alt="Foto dokter" class="w-10 h-10 rounded-full object-cover border">
+          <div>
+            <h3 id="chatDoctorName" class="font-semibold"></h3>
+            <p id="chatDoctorSpec" class="text-sm text-gray-600"></p>
+          </div>
+        </div>
+        <button type="button" class="text-gray-400 hover:text-gray-600 close-chat" data-close-chat>
+          ✕
+        </button>
+      </div>
+      
+      <div id="chatBox" class="flex-1 p-4 overflow-y-auto bg-rose-50/40 min-h-[300px] max-h-[400px]"></div>
+      
+      <form id="chatForm" class="border-t p-4">
+        <div class="flex gap-2">
+          <input id="chatInput" class="flex-1 rounded-xl border px-3 py-2 text-sm" placeholder="Tulis pesan…">
+          <button type="submit" class="px-4 py-2 rounded-xl bg-pink-600 text-white text-sm">Kirim</button>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Percakapan disimpan di perangkat Anda.</p>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(chatModal);
+
+  let currentChatDoctor = null;
+  const CHAT_KEY_PREFIX = "hl_chat_";
+
+  // ====== FUNGSI CHAT ======
+  function loadChat(doctorName) {
+    try {
+      return (
+        JSON.parse(localStorage.getItem(CHAT_KEY_PREFIX + doctorName)) || []
+      );
+    } catch {
+      return [];
+    }
+  }
+
+  function saveChat(doctorName, messages) {
+    localStorage.setItem(
+      CHAT_KEY_PREFIX + doctorName,
+      JSON.stringify(messages)
+    );
+  }
+
+  function renderChat(doctorName) {
+    const chatBox = document.getElementById("chatBox");
+    const messages = loadChat(doctorName);
+
+    chatBox.innerHTML = messages
+      .map(
+        (m) => `
+        <div class="mb-2 flex ${m.me ? "justify-end" : ""}">
+          <div class="max-w-[80%] px-3 py-2 rounded-2xl ${
+            m.me ? "bg-pink-600 text-white" : "bg-white border"
+          } text-sm">${m.text}</div>
+        </div>
+      `
+      )
+      .join("");
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function openChat(doctor) {
+    currentChatDoctor = doctor;
+
+    // Set data dokter di modal chat
+    document.getElementById("chatDoctorName").textContent = doctor.name;
+    document.getElementById("chatDoctorSpec").textContent = doctor.spec;
+    document.getElementById("chatDoctorPhoto").src = doctor.image;
+
+    // Render chat history
+    renderChat(doctor.name);
+
+    // Tampilkan modal chat
+    chatModal.classList.remove("hidden");
+    document.getElementById("chatInput").focus();
+  }
+
+  function closeChat() {
+    chatModal.classList.add("hidden");
+    currentChatDoctor = null;
+  }
+
+  // ====== FUNGSI MODAL DETAIL ======
+  function openDoctorDetail(doc) {
+    if (!doctorModal || !doc) return;
+
+    detailName.textContent = doc.name;
+    detailSpec.textContent = doc.spec;
+    detailPhoto.src = doc.image;
+    detailExperience.textContent = doc.experience || "-";
+    detailEducation.textContent = doc.education || "-";
+    detailWorkplaces.textContent = doc.workplaces || "-";
+
+    // Update tombol mulai chat di modal detail
+    detailChatLink.onclick = (e) => {
+      e.preventDefault();
+      closeDoctorDetail();
+      setTimeout(() => openChat(doc), 300);
+    };
+
+    doctorModal.classList.remove("hidden");
+  }
+
+  function closeDoctorDetail() {
+    if (!doctorModal) return;
+    doctorModal.classList.add("hidden");
+  }
+
+  // ====== EVENT LISTENERS CHAT ======
+  document.getElementById("chatForm")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (!currentChatDoctor) return;
+
+    const input = document.getElementById("chatInput");
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    // Simpan pesan user
+    const messages = loadChat(currentChatDoctor.name);
+    messages.push({ me: true, text, ts: Date.now() });
+    saveChat(currentChatDoctor.name, messages);
+
+    input.value = "";
+    renderChat(currentChatDoctor.name);
+
+    // Auto-reply dokter (simulasi)
+    setTimeout(() => {
+      const replyMessages = loadChat(currentChatDoctor.name);
+      replyMessages.push({
+        me: false,
+        text: "Terima kasih atas pesannya. Saya akan membalas segera. 😊",
+        ts: Date.now(),
+      });
+      saveChat(currentChatDoctor.name, replyMessages);
+      renderChat(currentChatDoctor.name);
+    }, 1000);
+  });
+
+  // ====== EVENT LISTENERS GLOBAL ======
+  document.addEventListener("click", (e) => {
+    // Klik card dokter untuk buka modal detail
+    const card = e.target.closest(".doctor-card");
+    if (card) {
+      const docName = card.dataset.docName;
+      const doc = doctorsData.find((d) => d.name === docName);
+      if (doc) {
+        openDoctorDetail(doc);
+      }
+    }
+
+    // Tombol tutup modal detail
+    if (
+      e.target.matches("[data-close-doctor-modal]") ||
+      e.target.closest("[data-close-doctor-modal]") ||
+      e.target === doctorModal
+    ) {
+      closeDoctorDetail();
+    }
+
+    // Tombol tutup modal chat
+    if (
+      e.target.matches("[data-close-chat]") ||
+      e.target.closest("[data-close-chat]") ||
+      e.target === chatModal
+    ) {
+      closeChat();
+    }
+  });
+
+  // ====== FILTER & SEARCH (tetap sama) ======
+  function resetSearch() {
+    if (search) search.value = "";
+    if (specSel) specSel.value = "Semua Spesialis";
+    if (timeSel) timeSel.value = "Semua Jadwal";
+    applyFilter();
+  }
+
+  function showAllDoctors() {
+    resetSearch();
+  }
+
   function applyFilter() {
-    const q = search.value.toLowerCase();
-    const spec = specSel.value;
+    const q = search?.value.toLowerCase() || "";
+    const spec = specSel?.value || "Semua Spesialis";
+    const time = timeSel?.value || "Semua Jadwal";
+
     let list = doctorsData.filter(
       (d) =>
         d.name.toLowerCase().includes(q) || d.spec.toLowerCase().includes(q)
     );
-    if (spec !== "Semua Spesialis")
+
+    // Filter spesialis
+    if (spec !== "Semua Spesialis") {
       list = list.filter((d) => d.spec.includes(spec.replace("Sp. ", "Sp. ")));
+    }
+
+    // Filter waktu ketersediaan
+    if (time !== "Semua Jadwal") {
+      if (time === "Tersedia Sekarang") {
+        list = list.filter((d) => d.avail.toLowerCase().includes("sekarang"));
+      } else if (time === "Malam Ini") {
+        list = list.filter((d) => d.avail.toLowerCase().includes("malam"));
+      }
+    }
+
     holder.innerHTML = renderDoctors(list);
+
+    // Tambah event tombol reset di tampilan "tidak ditemukan"
+    setTimeout(() => {
+      const resetBtn = holder.querySelector(".reset-search");
+      const showAllBtn = holder.querySelector(".show-all-doctors");
+
+      if (resetBtn) {
+        resetBtn.addEventListener("click", resetSearch);
+      }
+
+      if (showAllBtn) {
+        showAllBtn.addEventListener("click", showAllDoctors);
+      }
+    }, 100);
   }
+
+  // Inisialisasi list dokter
+  mountSkeleton(holder);
+  setTimeout(() => {
+    holder.innerHTML = renderDoctors(doctorsData);
+  }, 700);
+
+  // Event listeners filter
   search?.addEventListener("input", applyFilter);
   specSel?.addEventListener("change", applyFilter);
   timeSel?.addEventListener("change", applyFilter);
 })();
 
 /* ========= Articles page: skeleton then list ========= */
+/* ========= Articles page: skeleton + list + search ========= */
 (function articlesPage() {
   if (!document.body.matches('[data-page="articles"]')) return;
+
   const holder = document.querySelector("[data-skeleton-holder]");
+  const search = document.getElementById("articleSearch");
+
+  // Data artikel sama seperti sebelumnya
+  const articlesData = [
+    {
+      t: "Deformitas: Kenali Arti, Penyebab, dan Jenisnya",
+      tag: "Pengetahuan Umum",
+    },
+    {
+      t: "Vitamin Makarizo: Manfaat dan Cara Pakainya",
+      tag: "Perawatan Rambut",
+    },
+    { t: "Strabismus: Gejala, Sebab, dan Solusinya", tag: "Penyakit Mata" },
+    { t: "Muntah Kuning Pahit? Ini Penyebab & Cara Atasi", tag: "Mual" },
+    {
+      t: "5 Gejala Asam Lambung Naik dan Cara Mengatasinya",
+      tag: "Pencernaan",
+    },
+    {
+      t: "Waspada! Ini Tanda-tanda Penyakit Jantung yang Sering Diabaikan",
+      tag: "Jantung",
+    },
+  ];
+
+  // Fungsi render kartu artikel
+  function renderArticles(list) {
+    holder.innerHTML = `
+      <div class="grid md:grid-cols-2 gap-6">
+        ${list
+          .map(
+            (a) => `
+          <a class="flex gap-4 p-4 rounded-2xl border hover:shadow transition" href="#">
+            <div class="w-28 h-20 flex items-center justify-center rounded-lg bg-gray-100 overflow-hidden">
+              <img 
+                src="https://klinikkeluarga.com/assets/uploads/artikels/klinik-keluarga-pentingnya-gaya-hidup-sehat-menjaga-kesehatan-tubuh-dan-pikiran.jpg" 
+                alt="Gambar artikel" 
+                class="w-full h-full object-cover">
+            </div>
+            <div>
+              <p class="font-medium">${a.t}</p>
+              <span class="inline-block mt-1 text-xs px-2 py-0.5 rounded bg-gray-100">${a.tag}</span>
+            </div>
+          </a>
+        `
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  // Fungsi filter seperti di doctors: berdasarkan judul/tag
+  function applyArticleFilter() {
+    const q = (search?.value || "").toLowerCase().trim();
+    const filtered = articlesData.filter(
+      (a) => a.t.toLowerCase().includes(q) || a.tag.toLowerCase().includes(q)
+    );
+    renderArticles(filtered);
+  }
+
+  // Tampilkan skeleton dulu
   mountSkeleton(holder, 4);
-  setTimeout(
-    () =>
-      (holder.innerHTML = `
-    <div class="grid md:grid-cols-2 gap-6">
-      ${[
-        {
-          t: "Deformitas: Kenali Arti, Penyebab, dan Jenisnya",
-          tag: "Pengetahuan Umum",
-        },
-        {
-          t: "Vitamin Makarizo: Manfaat dan Cara Pakainya",
-          tag: "Perawatan Rambut",
-        },
-        { t: "Strabismus: Gejala, Sebab, dan Solusinya", tag: "Penyakit Mata" },
-        { t: "Muntah Kuning Pahit? Ini Penyebab & Cara Atasi", tag: "Mual" },
-        {
-          t: "5 Gejala Asam Lambung Naik dan Cara Mengatasinya",
-          tag: "Pencernaan",
-        },
-        {
-          t: "Waspada! Ini Tanda-tanda Penyakit Jantung yang Sering Diabaikan",
-          tag: "Jantung",
-        },
-      ]
-        .map(
-          (a) => `
-       <a class="flex gap-4 p-4 rounded-2xl border hover:shadow" href="#">
-  <div class="w-28 h-20 flex items-center justify-center rounded-lg bg-gray-100 overflow-hidden">
-    <img src="https://klinikkeluarga.com/assets/uploads/artikels/klinik-keluarga-pentingnya-gaya-hidup-sehat-menjaga-kesehatan-tubuh-dan-pikiran.jpg" 
-         alt="Gambar artikel" 
-         class="w-full h-full object-cover">
-  </div>
-  <div>
-    <p class="font-medium">${a.t}</p>
-    <span class="inline-block mt-1 text-xs px-2 py-0.5 rounded bg-gray-100">${a.tag}</span>
-  </div>
-</a>
-      `
-        )
-        .join("")}
-    </div>
-  `),
-    700
-  );
+
+  // Setelah "loading" selesai, render semua artikel
+  setTimeout(() => {
+    renderArticles(articlesData);
+    // Pastikan search bekerja setelah kartu muncul
+    applyArticleFilter();
+  }, 700);
+
+  // Event: realtime search
+  search?.addEventListener("input", applyArticleFilter);
 })();
 
-/* ========= Pharmacy cart (localStorage) – tetap dari versi sebelumnya ========= */
+/* ========= Pharmacy cart (localStorage) ========= */
 const CART_KEY = "hl_cart_v1";
+
 const $cartBtn = document.getElementById("cartBtn");
 const $cartDrawer = document.getElementById("cartDrawer");
 const $cartCount = document.getElementById("cartCount");
@@ -787,6 +1128,7 @@ const $cartItems = document.getElementById("cartItems");
 const $cartTotal = document.getElementById("cartTotal");
 const $closeCart = document.getElementById("closeCart");
 const $clearCart = document.getElementById("clearCart");
+const $checkoutBtn = document.getElementById("checkoutBtn");
 
 function getCart() {
   try {
@@ -795,30 +1137,36 @@ function getCart() {
     return [];
   }
 }
+
 function saveCart(items) {
   localStorage.setItem(CART_KEY, JSON.stringify(items));
 }
+
 function formatRupiah(n) {
   return "Rp" + (n || 0).toLocaleString("id-ID");
 }
+
 function updateCartCount() {
   if (!$cartCount) return;
   const totalQty = getCart().reduce((a, b) => a + (b.qty || 0), 0);
   $cartCount.textContent = totalQty;
 }
+
 function renderCart() {
   if (!$cartItems || !$cartTotal) return;
   const items = getCart();
+
   $cartItems.innerHTML = items.length
     ? items
         .map(
           (it) => `
       <div class="flex items-center justify-between gap-3 p-2 rounded-lg border">
-        <div><p class="font-medium text-sm">${
-          it.name
-        }</p><p class="text-xs text-gray-500">${formatRupiah(it.price)} × ${
-            it.qty
-          }</p></div>
+        <div>
+          <p class="font-medium text-sm">${it.name}</p>
+          <p class="text-xs text-gray-500">
+            ${formatRupiah(it.price)} × ${it.qty}
+          </p>
+        </div>
         <div class="flex items-center gap-2">
           <button class="px-2 py-1 rounded border" data-dec="${
             it.id
@@ -828,138 +1176,110 @@ function renderCart() {
           }">+</button>
           <button class="px-2 py-1 rounded border text-red-600" data-del="${
             it.id
-          }">Hapus</button>
+          }">
+            Hapus
+          </button>
         </div>
       </div>`
         )
         .join("")
     : `<div class="text-sm text-gray-600">Keranjang kosong.</div>`;
+
   const total = items.reduce((a, b) => a + b.price * b.qty, 0);
   $cartTotal.textContent = formatRupiah(total);
 }
+
 function addToCart({ id, name, price }) {
   const items = getCart();
   const idx = items.findIndex((i) => i.id === id);
-  if (idx > -1) items[idx].qty += 1;
-  else items.push({ id, name, price: Number(price), qty: 1 });
+
+  if (idx > -1) {
+    items[idx].qty += 1;
+  } else {
+    items.push({ id, name, price: Number(price), qty: 1 });
+  }
+
   saveCart(items);
   updateCartCount();
   renderCart();
   showToast("Ditambahkan ke keranjang");
 }
+
 function openCart() {
   if ($cartDrawer) $cartDrawer.classList.remove("translate-x-full");
 }
+
 function closeCart() {
   if ($cartDrawer) $cartDrawer.classList.add("translate-x-full");
 }
 
+/* Tambah ke keranjang */
 document.querySelectorAll(".add-cart")?.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     const { id, name, price } = e.currentTarget.dataset;
     addToCart({ id, name, price });
   });
 });
+
+/* Buka / tutup drawer keranjang */
 $cartBtn?.addEventListener("click", openCart);
 $closeCart?.addEventListener("click", closeCart);
+
+/* Tombol +, -, Hapus di dalam keranjang */
 document.addEventListener("click", (e) => {
   const inc = e.target.closest("[data-inc]");
   const dec = e.target.closest("[data-dec]");
   const del = e.target.closest("[data-del]");
+
   if (!inc && !dec && !del) return;
+
   const id =
     (inc || dec || del).dataset.inc ||
     (inc || dec || del).dataset.dec ||
     (inc || dec || del).dataset.del;
+
   let items = getCart();
   const idx = items.findIndex((i) => i.id === id);
   if (idx === -1) return;
-  if (inc) {
-    items[idx].qty += 1;
-  }
-  if (dec) {
-    items[idx].qty = Math.max(1, items[idx].qty - 1);
-  }
-  if (del) {
-    items.splice(idx, 1);
-  }
+
+  if (inc) items[idx].qty += 1;
+  if (dec) items[idx].qty = Math.max(1, items[idx].qty - 1);
+  if (del) items.splice(idx, 1);
+
   saveCart(items);
   updateCartCount();
   renderCart();
 });
+
+/* Kosongkan keranjang */
 $clearCart?.addEventListener("click", () => {
   saveCart([]);
   updateCartCount();
   renderCart();
   showToast("Keranjang dikosongkan");
 });
+
+/* Checkout → ke halaman pilih alamat (address.html) */
+$checkoutBtn?.addEventListener("click", () => {
+  const items = getCart();
+  if (!items.length) {
+    showToast("Keranjang masih kosong");
+    return;
+  }
+
+  // Pastikan cart tersimpan & drawer ditutup
+  saveCart(items);
+  closeCart();
+
+  // Arahkan ke halaman pilih alamat
+  window.location.href = "/pages/address.html";
+});
+
+/* Inisialisasi awal ketika halaman pharmacy dibuka */
 if ($cartCount) {
   updateCartCount();
   renderCart();
 }
-
-/* ========= Chat page ========= */
-(function chatPage() {
-  if (!document.body.matches('[data-page="chat"]')) return;
-  const params = new URLSearchParams(location.search);
-  const docName = params.get("doc") || "Dokter";
-  const title = document.getElementById("chatTitle");
-  const box = document.getElementById("chatBox");
-  const form = document.getElementById("chatForm");
-  const input = document.getElementById("chatInput");
-
-  title.textContent = `Chat – ${docName}`;
-
-  const KEY = "hl_chat_" + docName;
-  const load = () => {
-    try {
-      return JSON.parse(localStorage.getItem(KEY)) || [];
-    } catch {
-      return [];
-    }
-  };
-  const save = (arr) => localStorage.setItem(KEY, JSON.stringify(arr));
-
-  function render() {
-    const arr = load();
-    box.innerHTML = arr
-      .map(
-        (m) => `
-      <div class="mb-2 flex ${m.me ? "justify-end" : ""}">
-        <div class="max-w-[70%] px-3 py-2 rounded-2xl ${
-          m.me ? "bg-pink-600 text-white" : "bg-white border"
-        }">${m.text}</div>
-      </div>
-    `
-      )
-      .join("");
-    box.scrollTop = box.scrollHeight;
-  }
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const text = input.value.trim();
-    if (!text) return;
-    const arr = load();
-    arr.push({ me: true, text, ts: Date.now() });
-    save(arr);
-    input.value = "";
-    render();
-    // auto-reply dummy
-    setTimeout(() => {
-      const a = load();
-      a.push({
-        me: false,
-        text: "Baik, akan saya bantu ya 🙂",
-        ts: Date.now(),
-      });
-      save(a);
-      render();
-    }, 600);
-  });
-
-  render();
-})();
 
 /* ============ Faskes Terdekat (Map Page) ============ */
 const facilitiesData = [
@@ -1447,21 +1767,198 @@ function renderFacilities(list) {
     .join("");
 }
 
+/* ========= Faskes Terdekat Page ========= */
 (function mapPage() {
   if (!document.body.matches('[data-page="map"]')) return;
+
   const listEl = document.getElementById("faskesList");
   const qEl = document.getElementById("faskesSearch");
   const frame = document.getElementById("mapFrame");
   const locationBtn = document.getElementById("getLocationBtn");
+  const manualLocationBtn = document.getElementById("manualLocationBtn");
   const locationStatus = document.getElementById("locationStatus");
 
+  // ====== ELEMEN MODAL ======
+  const faskesModal = document.getElementById("faskesDetailModal");
+  const manualForm = document.getElementById("manualLocationForm");
+  const detailName = document.getElementById("detailFaskesName");
+  const detailCategory = document.getElementById("detailFaskesCategory");
+  const detailAddress = document.getElementById("detailFaskesAddress");
+  const detailPhone = document.getElementById("detailFaskesPhone");
+  const detailNavigateBtn = document.getElementById("detailNavigateBtn");
+
   let userLocation = null;
+  let currentFaskes = null;
   let data = [...facilitiesData];
 
-  // Fungsi deteksi lokasi
+  // ====== FUNGSI MODAL DETAIL ======
+  function openFaskesDetail(faskes) {
+    if (!faskesModal || !faskes) return;
+
+    currentFaskes = faskes;
+
+    detailName.textContent = faskes.name;
+    detailCategory.textContent = faskes.category;
+    detailAddress.textContent = faskes.addr;
+    detailPhone.textContent = faskes.phone;
+
+    // UPDATE: Track apakah user menekan Directions atau tidak
+    let directionsPressed = false;
+
+    detailNavigateBtn.onclick = () => {
+      directionsPressed = true;
+      openNavigation(faskes);
+      closeFaskesDetail();
+    };
+
+    // UPDATE: Track ketika modal ditutup tanpa navigasi
+    const modalBackdrop = faskesModal;
+    const originalDisplay = modalBackdrop.style.display;
+
+    const handleModalClose = () => {
+      if (!directionsPressed) {
+        // Implementasi 3.1: Jika tutup tanpa Directions, proses berhenti
+        console.log("User menutup modal tanpa navigasi - proses berhenti");
+        // Bisa tambahkan analytics atau tracking di sini
+      }
+    };
+
+    // Override close function untuk tracking
+    const closeHandler = () => {
+      handleModalClose();
+      closeFaskesDetail();
+    };
+
+    // Update event listeners untuk tracking
+    const closeButtons = faskesModal.querySelectorAll(
+      "[data-close-faskes-modal]"
+    );
+    closeButtons.forEach((btn) => {
+      btn.onclick = closeHandler;
+    });
+
+    faskesModal.classList.remove("hidden");
+  }
+
+  function closeFaskesDetail() {
+    if (!faskesModal) return;
+    faskesModal.classList.add("hidden");
+    currentFaskes = null;
+  }
+
+  // ====== FUNGSI NAVIGASI ======
+  function openNavigation(faskes) {
+    if (!faskes) return;
+
+    let navUrl = `https://www.google.com/maps/dir/?api=1&destination=${faskes.lat},${faskes.lng}`;
+
+    if (userLocation) {
+      // Implementasi: getRuteNavigasi(faskesTerpilih, mode)
+      navUrl += `&origin=${userLocation.lat},${userLocation.lng}`;
+    }
+
+    // Implementasi: displayRuteNavigasi()
+    window.open(navUrl, "_blank");
+  }
+
+  // ====== FUNGSI RENDER LIST ======
+  function renderFacilities(list) {
+    return list
+      .map(
+        (f, i) => `
+      <div class="rounded-xl border p-4 mb-4 hover:shadow transition-all cursor-pointer faskes-item" data-faskes-id="${i}">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex-1">
+            <p class="font-semibold">${f.name}</p>
+            <p class="text-sm text-gray-600">${f.category}</p>
+            <p class="text-xs text-gray-500 mt-1">${f.addr}</p>
+            <p class="text-xs text-gray-500">📞 ${f.phone}</p>
+            ${
+              f.distance
+                ? `<p class="text-xs text-green-600 mt-1">📍 ${f.distance.toFixed(
+                    1
+                  )} km dari Anda</p>`
+                : ""
+            }
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button 
+            class="flex-1 px-3 py-2 rounded-lg bg-pink-600 text-white text-sm view-detail"
+            data-view="${i}"
+          >
+            👁️ Lihat Detail
+          </button>
+          <button 
+            class="flex-1 px-3 py-2 rounded-lg border border-pink-600 text-pink-600 text-sm navigate-btn"
+            data-navigate="${i}"
+          >
+            🧭 Navigasi
+          </button>
+        </div>
+      </div>
+    `
+      )
+      .join("");
+  }
+
+  // ====== FUNGSI SORT BY DISTANCE ======
+  function sortFacilitiesByDistance() {
+    if (!userLocation) return;
+
+    facilitiesData.forEach((faskes) => {
+      faskes.distance = calculateDistance(
+        userLocation.lat,
+        userLocation.lng,
+        faskes.lat,
+        faskes.lng
+      );
+    });
+
+    facilitiesData.sort((a, b) => a.distance - b.distance);
+  }
+
+  // ====== ALTERNATE FLOW: LOKASI MANUAL ======
+  function openManualLocationForm() {
+    if (!manualForm) return;
+    manualForm.classList.remove("hidden");
+  }
+
+  function closeManualLocationForm() {
+    if (!manualForm) return;
+    manualForm.classList.add("hidden");
+  }
+
+  function useManualLocation() {
+    const address = document.getElementById("manualAddress").value.trim();
+    const lat = parseFloat(document.getElementById("manualLat").value);
+    const lng = parseFloat(document.getElementById("manualLng").value);
+
+    // Validasi input
+    if (!address || isNaN(lat) || isNaN(lng)) {
+      alert("Harap lengkapi alamat dan koordinat dengan benar");
+      return;
+    }
+
+    // Set user location manual
+    userLocation = { lat, lng };
+
+    document.getElementById("currentLocation").textContent = address;
+    locationStatus.classList.remove("hidden");
+
+    // Implementasi: findFaskesTerdekat(lat, lng) dengan lokasi manual
+    sortFacilitiesByDistance();
+    apply();
+
+    closeManualLocationForm();
+    showToast("Lokasi manual berhasil digunakan");
+  }
+
+  // ====== ENHANCE DETECTION LOCATION DENGAN ERROR HANDLING ======
   function getCurrentLocation() {
     if (!navigator.geolocation) {
-      alert("Browser tidak mendukung geolocation");
+      alert("Browser tidak mendukung geolocation. Gunakan lokasi manual.");
+      openManualLocationForm();
       return;
     }
 
@@ -1469,6 +1966,7 @@ function renderFacilities(list) {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        // Success flow - langsung integrasikan dengan Google Maps
         userLocation = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
@@ -1479,20 +1977,60 @@ function renderFacilities(list) {
         locationStatus.classList.remove("hidden");
         locationBtn.textContent = "📍 Lokasi Aktif";
 
-        // Urutkan faskes berdasarkan jarak terdekat
+        // UPDATE: Langsung set map ke lokasi user
+        setMapToUserLocation();
+
         sortFacilitiesByDistance();
         apply();
       },
       (error) => {
-        alert(
-          "Aktifkan lokasi untuk hasil terdekat, atau gunakan pencarian manual"
-        );
         locationBtn.textContent = "📍 Gunakan Lokasi Saya";
+
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            // UPDATE: Tawarkan alternatif langsung ke Maps dengan input manual
+            if (
+              confirm(
+                "Izin lokasi ditolak. Ingin membuka Google Maps untuk memasukkan lokasi manual?"
+              )
+            ) {
+              openGoogleMapsWithManualLocation();
+            } else {
+              openManualLocationForm();
+            }
+            break;
+          case error.POSITION_UNAVAILABLE:
+            alert("Lokasi tidak tersedia. Gunakan lokasi manual.");
+            openManualLocationForm();
+            break;
+          case error.TIMEOUT:
+            alert(
+              "Timeout mendapatkan lokasi. Coba lagi atau gunakan lokasi manual."
+            );
+            break;
+          default:
+            alert("Gagal mendeteksi lokasi. Gunakan lokasi manual.");
+            openManualLocationForm();
+        }
       }
     );
   }
 
-  // Fungsi apply yang disederhanakan
+  // FUNGSI BARU: Buka Google Maps langsung untuk input lokasi manual
+  function openGoogleMapsWithManualLocation() {
+    const mapsUrl = `https://www.google.com/maps/@-6.2088,106.8456,12z`;
+    window.open(mapsUrl, "_blank");
+    showToast("Google Maps dibuka. Silakan cari lokasi manual di Maps");
+  }
+
+  // FUNGSI BARU: Set map ke lokasi user
+  function setMapToUserLocation() {
+    if (!userLocation) return;
+    const src = `https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}&z=15&output=embed`;
+    frame.src = src;
+  }
+
+  // ====== FUNGSI FILTER & SEARCH ======
   function apply() {
     const q = (qEl.value || "").toLowerCase();
     let res = facilitiesData.filter(
@@ -1503,39 +2041,69 @@ function renderFacilities(list) {
     listEl.innerHTML = renderFacilities(res);
   }
 
-  apply();
-  locationBtn.addEventListener("click", getCurrentLocation);
-  qEl.addEventListener("input", apply);
+  // ====== EVENT LISTENERS ======
+  function initializeEvents() {
+    // Inisialisasi data
+    apply();
 
-  document.addEventListener("click", (e) => {
-    const viewBtn = e.target.closest("[data-view]");
-    const navBtn = e.target.closest("[data-navigate]");
+    // === EVENT LISTENERS UTAMA ===
+    locationBtn.addEventListener("click", getCurrentLocation);
+    manualLocationBtn.addEventListener("click", openManualLocationForm);
+    qEl.addEventListener("input", apply);
 
-    if (viewBtn) {
-      const idx = Number(viewBtn.dataset.view);
-      const item = data[idx];
-      if (!item) return;
-      // Lihat di Maps
-      const src = `https://www.google.com/maps?q=${encodeURIComponent(
-        item.name + " " + item.addr
-      )}&output=embed`;
-      frame.src = src;
-    }
+    // === EVENT LISTENERS MODAL & FORM ===
+    document
+      .getElementById("confirmManualLocation")
+      ?.addEventListener("click", useManualLocation);
+    document
+      .getElementById("openMapsDirectly")
+      ?.addEventListener("click", openGoogleMapsWithManualLocation);
 
-    if (navBtn) {
-      const idx = Number(navBtn.dataset.navigate);
-      const item = data[idx];
-      if (!item) return;
-      // Navigasi - buka Google Maps dengan directions
-      let navUrl = `https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`;
+    // === EVENT LISTENER GLOBAL ===
+    document.addEventListener("click", (e) => {
+      // Klik item faskes atau tombol lihat detail
+      const faskesItem = e.target.closest(".faskes-item");
+      const viewBtn = e.target.closest(".view-detail");
+      const navBtn = e.target.closest(".navigate-btn");
 
-      if (userLocation) {
-        navUrl += `&origin=${userLocation.lat},${userLocation.lng}`;
+      if (faskesItem || viewBtn) {
+        const idx = Number(
+          faskesItem?.dataset.faskesId || viewBtn?.dataset.view
+        );
+        const item = data[idx];
+        if (!item) return;
+        openFaskesDetail(item);
       }
 
-      window.open(navUrl, "_blank");
-    }
-  });
+      if (navBtn) {
+        const idx = Number(navBtn.dataset.navigate);
+        const item = data[idx];
+        if (!item) return;
+        openNavigation(item);
+      }
+
+      // Tombol tutup modal detail faskes
+      if (
+        e.target.matches("[data-close-faskes-modal]") ||
+        e.target.closest("[data-close-faskes-modal]") ||
+        e.target === faskesModal
+      ) {
+        closeFaskesDetail();
+      }
+
+      // Tombol tutup form manual
+      if (
+        e.target.matches("[data-close-manual-form]") ||
+        e.target.closest("[data-close-manual-form]") ||
+        e.target === manualForm
+      ) {
+        closeManualLocationForm();
+      }
+    });
+  }
+
+  // ====== INITIALIZATION ======
+  initializeEvents();
 })();
 
 /* ========= BMI Calculator ========= */
@@ -2145,4 +2713,369 @@ function renderFacilities(list) {
 
   // Initialize
   updateCarousel();
+})();
+
+/* ========= Checkout / Payment Page ========= */
+(function checkoutPage() {
+  if (!document.body.matches('[data-page="checkout"]')) return;
+
+  // DOM elemen
+  const prescriptionWarning = document.getElementById("prescriptionWarning");
+  const useLocationBtn = document.getElementById("useLocationBtn");
+  const nearestPharmacyText = document.getElementById("nearestPharmacyText");
+
+  const shipName = document.getElementById("shipName");
+  const shipPhone = document.getElementById("shipPhone");
+  const shipAddress = document.getElementById("shipAddress");
+  const shipCity = document.getElementById("shipCity");
+  const shipNote = document.getElementById("shipNote");
+  const saveAddressBtn = document.getElementById("saveAddressBtn");
+  const addressSavedText = document.getElementById("addressSavedText");
+
+  const checkoutItems = document.getElementById("checkoutItems");
+  const summarySubtotal = document.getElementById("summarySubtotal");
+  const summaryShipping = document.getElementById("summaryShipping");
+  const summaryTotal = document.getElementById("summaryTotal");
+
+  const confirmPaymentBtn = document.getElementById("confirmPaymentBtn");
+  const paymentStatusBox = document.getElementById("paymentStatusBox");
+  const paymentStatusText = document.getElementById("paymentStatusText");
+
+  const SHIPPING_FEE = 10000;
+
+  // ====== 1. Render ringkasan cart ======
+  function renderCheckoutItems() {
+    const items = getCart();
+    if (!items.length) {
+      checkoutItems.innerHTML = `<p class="text-sm text-gray-500">Keranjang kosong. Silakan kembali ke <a href="/pages/pharmacy.html" class="text-pink-600 font-medium">Toko</a>.</p>`;
+      summarySubtotal.textContent = formatRupiah(0);
+      summaryShipping.textContent = formatRupiah(0);
+      summaryTotal.textContent = formatRupiah(0);
+      return;
+    }
+
+    checkoutItems.innerHTML = items
+      .map(
+        (it) => `
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-medium">${it.name}</p>
+            <p class="text-xs text-gray-500">${formatRupiah(it.price)} × ${
+          it.qty
+        }</p>
+          </div>
+          <p class="font-semibold text-sm">${formatRupiah(
+            it.price * it.qty
+          )}</p>
+        </div>
+      `
+      )
+      .join("");
+
+    const subtotal = items.reduce((a, b) => a + b.price * b.qty, 0);
+    summarySubtotal.textContent = formatRupiah(subtotal);
+    summaryShipping.textContent = formatRupiah(SHIPPING_FEE);
+    summaryTotal.textContent = formatRupiah(subtotal + SHIPPING_FEE);
+  }
+
+  // ====== 2. Load user info dan alamat tersimpan ======
+  function loadInitialData() {
+    const user = getUser();
+    if (user) {
+      // default nama & telp dari user
+      if (!shipName.value) shipName.value = user.name || "";
+      if (!shipPhone.value) shipPhone.value = user.phoneNumber || "";
+    }
+
+    const savedAddress = JSON.parse(
+      localStorage.getItem("hl_shipping_address") || "null"
+    );
+    if (savedAddress) {
+      shipName.value = savedAddress.name || shipName.value;
+      shipPhone.value = savedAddress.phone || shipPhone.value;
+      shipAddress.value = savedAddress.address || "";
+      shipCity.value = savedAddress.city || "";
+      shipNote.value = savedAddress.note || "";
+      addressSavedText.classList.remove("hidden");
+    }
+  }
+
+  // ====== 3. Simpan alamat ======
+  saveAddressBtn.addEventListener("click", () => {
+    const name = shipName.value.trim();
+    const phone = shipPhone.value.trim();
+    const address = shipAddress.value.trim();
+    const city = shipCity.value.trim();
+    const note = shipNote.value.trim();
+
+    if (!name || !phone || !address || !city) {
+      showToast("Harap lengkapi data alamat utama");
+      addressSavedText.classList.add("hidden");
+      return;
+    }
+
+    const data = { name, phone, address, city, note };
+    localStorage.setItem("hl_shipping_address", JSON.stringify(data));
+    addressSavedText.classList.remove("hidden");
+    showToast("Alamat pengantaran tersimpan");
+  });
+
+  // ====== 4. Deteksi lokasi & apotek terdekat ======
+  useLocationBtn?.addEventListener("click", () => {
+    if (!navigator.geolocation) {
+      showToast("Browser tidak mendukung geolocation");
+      return;
+    }
+
+    useLocationBtn.disabled = true;
+    useLocationBtn.textContent = "Mendeteksi lokasi...";
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const userLat = pos.coords.latitude;
+        const userLng = pos.coords.longitude;
+
+        if (!Array.isArray(facilitiesData) || !facilitiesData.length) {
+          nearestPharmacyText.textContent =
+            "Data fasilitas kesehatan tidak tersedia.";
+          return;
+        }
+
+        // cari fasilitas terdekat dengan kategori Apotek (atau apa saja jika tidak ada)
+        let nearest = null;
+        let minDist = Infinity;
+
+        facilitiesData.forEach((f) => {
+          const dist = calculateDistance(userLat, userLng, f.lat, f.lng);
+          if (!nearest || dist < minDist) {
+            nearest = f;
+            minDist = dist;
+          }
+        });
+
+        if (nearest) {
+          nearestPharmacyText.textContent = `Apotek terdekat: ${
+            nearest.name
+          } (${nearest.category}) – sekitar ${minDist.toFixed(
+            1
+          )} km dari lokasi Anda.`;
+        } else {
+          nearestPharmacyText.textContent = "Tidak ditemukan apotek terdekat.";
+        }
+
+        useLocationBtn.textContent = "📍 Lokasi Terdeteksi";
+      },
+      () => {
+        showToast("Gagal mendeteksi lokasi. Coba lagi atau isi alamat manual.");
+        useLocationBtn.disabled = false;
+        useLocationBtn.textContent = "📍 Gunakan Lokasi Saya";
+      }
+    );
+  });
+
+  // ====== 5. Resep dokter: tampilkan peringatan jika tidak punya ======
+  document.addEventListener("change", (e) => {
+    if (e.target.name === "hasPrescription") {
+      if (e.target.value === "no") {
+        prescriptionWarning.classList.remove("hidden");
+      } else {
+        prescriptionWarning.classList.add("hidden");
+      }
+    }
+  });
+
+  // ====== 6. Konfirmasi & Bayar ======
+  confirmPaymentBtn.addEventListener("click", () => {
+    const items = getCart();
+    if (!items.length) {
+      showToast("Keranjang kosong. Silakan pilih obat terlebih dahulu.");
+      return;
+    }
+
+    const hasRx = document.querySelector(
+      'input[name="hasPrescription"]:checked'
+    );
+    if (!hasRx) {
+      showToast("Pilih status resep dokter terlebih dahulu.");
+      return;
+    }
+    if (hasRx.value === "no") {
+      // user tetap boleh lanjut, tapi ingatkan lagi
+      if (
+        !confirm(
+          "Anda belum memiliki resep dokter. Apakah tetap ingin melanjutkan pembayaran?"
+        )
+      ) {
+        return;
+      }
+    }
+
+    const savedAddress = JSON.parse(
+      localStorage.getItem("hl_shipping_address") || "null"
+    );
+    if (!savedAddress) {
+      showToast("Simpan alamat pengantaran terlebih dahulu.");
+      return;
+    }
+
+    const paymentMethod = document.querySelector(
+      'input[name="paymentMethod"]:checked'
+    );
+    if (!paymentMethod) {
+      showToast("Pilih metode pembayaran terlebih dahulu.");
+      return;
+    }
+
+    // Hitung total lagi
+    const subtotal = items.reduce((a, b) => a + b.price * b.qty, 0);
+    const total = subtotal + SHIPPING_FEE;
+
+    // Simulasi hasil pembayaran (di sini kita anggap sukses)
+    paymentStatusBox.classList.remove("hidden");
+    paymentStatusText.textContent = `Pembayaran sebesar ${formatRupiah(
+      total
+    )} dengan metode ${paymentMethod.value.toUpperCase()} berhasil dikonfirmasi. Pesanan akan dikirim ke alamat: ${
+      savedAddress.address
+    }, ${savedAddress.city}.`;
+
+    showToast("Pembayaran berhasil!");
+
+    // Kosongkan keranjang sesudah "bayar"
+    saveCart([]);
+    updateCartCount();
+  });
+
+  // INIT
+  renderCheckoutItems();
+  loadInitialData();
+})();
+
+/* ========= Address Selection Page (sebelum Checkout) ========= */
+(function addressPage() {
+  if (!document.body.matches('[data-page="address"]')) return;
+
+  const mapFrame = document.getElementById("addressMap");
+  const useLocationBtn = document.getElementById("useMyLocation");
+  const addressInput = document.getElementById("addressInput");
+  const locationInfo = document.getElementById("locationInfo");
+  const confirmBtn = document.getElementById("confirmAddressBtn");
+  const nearestPharmacyBox = document.getElementById("nearestPharmacy");
+
+  let currentCoords = null;
+
+  function setMapToCoords(lat, lng) {
+    currentCoords = { lat, lng };
+    const src = `https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+    mapFrame.src = src;
+    locationInfo.textContent = `Lokasi terdeteksi: ${lat.toFixed(
+      4
+    )}, ${lng.toFixed(4)}`;
+  }
+
+  // Cari apotek terdekat berdasarkan facilitiesData yang sudah ada di main.js
+  function updateNearestPharmacy() {
+    if (!currentCoords || !nearestPharmacyBox || !Array.isArray(facilitiesData))
+      return;
+
+    const listWithDistance = facilitiesData
+      .map((f) => {
+        const dist = calculateDistance(
+          currentCoords.lat,
+          currentCoords.lng,
+          f.lat,
+          f.lng
+        );
+        return { ...f, distance: dist };
+      })
+      .sort((a, b) => a.distance - b.distance);
+
+    const nearest = listWithDistance[0];
+    if (!nearest) return;
+
+    nearestPharmacyBox.textContent = `${
+      nearest.name
+    } – sekitar ${nearest.distance.toFixed(1)} km dari lokasi Anda`;
+  }
+
+  useLocationBtn.addEventListener("click", () => {
+    if (!navigator.geolocation) {
+      alert("Browser tidak mendukung geolocation.");
+      return;
+    }
+
+    useLocationBtn.textContent = "🔄 Mendeteksi...";
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        setMapToCoords(lat, lng);
+
+        // Kalau alamat masih kosong, isi dengan teks default dari koordinat
+        if (!addressInput.value.trim()) {
+          addressInput.value = `Lokasi saya (${lat.toFixed(4)}, ${lng.toFixed(
+            4
+          )})`;
+        }
+
+        updateNearestPharmacy();
+        useLocationBtn.textContent = "📍 Gunakan Lokasi Saya";
+      },
+      (err) => {
+        console.error(err);
+        alert("Gagal mendeteksi lokasi, silakan isi alamat manual.");
+        useLocationBtn.textContent = "📍 Gunakan Lokasi Saya";
+      }
+    );
+  });
+
+  confirmBtn.addEventListener("click", () => {
+    const addressText = addressInput.value.trim();
+    if (!addressText) {
+      alert("Silakan isi alamat lengkap terlebih dahulu.");
+      return;
+    }
+
+    const shipping = {
+      address: addressText,
+      coords: currentCoords,
+      createdAt: new Date().toISOString(),
+    };
+
+    // Simpan ke localStorage → dibaca di checkout.html
+    localStorage.setItem("hl_shipping", JSON.stringify(shipping));
+
+    // Lanjut ke halaman checkout
+    window.location.href = "/pages/checkout.html";
+  });
+})();
+
+/* ========= Checkout Page: prefill alamat dari address.html ========= */
+(function checkoutPage() {
+  if (!document.body.matches('[data-page="checkout"]')) return;
+
+  const nameInput = document.getElementById("receiverName");
+  const phoneInput = document.getElementById("receiverPhone");
+  const addressInput = document.getElementById("addressFull");
+  const cityInput = document.getElementById("city");
+
+  // Ambil user login untuk default nama & telp
+  const user = typeof getUser === "function" ? getUser() : null;
+  if (user) {
+    if (nameInput && !nameInput.value) nameInput.value = user.name || "";
+    if (phoneInput && !phoneInput.value)
+      phoneInput.value = user.phoneNumber || user.phone || "";
+  }
+
+  // Ambil data shipping dari address.html
+  let shipping = null;
+  try {
+    shipping = JSON.parse(localStorage.getItem("hl_shipping") || "null");
+  } catch (e) {
+    shipping = null;
+  }
+
+  if (shipping && addressInput) {
+    addressInput.value = shipping.address || "";
+    // Kalau ingin, city bisa dikosongkan supaya diisi manual
+  }
 })();

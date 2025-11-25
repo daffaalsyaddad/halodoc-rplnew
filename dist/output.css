@@ -610,6 +610,10 @@ video {
   right: 0px;
 }
 
+.right-4 {
+  right: 1rem;
+}
+
 .right-5 {
   right: 1.25rem;
 }
@@ -620,6 +624,10 @@ video {
 
 .top-1\/2 {
   top: 50%;
+}
+
+.top-4 {
+  top: 1rem;
 }
 
 .top-full {
@@ -699,6 +707,10 @@ video {
 
 .mr-2 {
   margin-right: 0.5rem;
+}
+
+.mt-0\.5 {
+  margin-top: 0.125rem;
 }
 
 .mt-1 {
@@ -821,6 +833,10 @@ video {
   height: 1.25rem;
 }
 
+.h-56 {
+  height: 14rem;
+}
+
 .h-6 {
   height: 1.5rem;
 }
@@ -849,8 +865,20 @@ video {
   height: 100%;
 }
 
+.max-h-\[400px\] {
+  max-height: 400px;
+}
+
 .max-h-\[70vh\] {
   max-height: 70vh;
+}
+
+.max-h-\[80vh\] {
+  max-height: 80vh;
+}
+
+.min-h-\[300px\] {
+  min-height: 300px;
 }
 
 .min-h-screen {
@@ -937,12 +965,20 @@ video {
   max-width: 48rem;
 }
 
+.max-w-5xl {
+  max-width: 64rem;
+}
+
 .max-w-7xl {
   max-width: 80rem;
 }
 
-.max-w-\[70\%\] {
-  max-width: 70%;
+.max-w-\[80\%\] {
+  max-width: 80%;
+}
+
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .max-w-md {
@@ -996,6 +1032,10 @@ video {
 
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .flex-col {
@@ -1168,6 +1208,11 @@ video {
   border-top-width: 1px;
 }
 
+.border-amber-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(253 230 138 / var(--tw-border-opacity, 1));
+}
+
 .border-blue-500 {
   --tw-border-opacity: 1;
   border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
@@ -1191,6 +1236,11 @@ video {
 .border-green-200 {
   --tw-border-opacity: 1;
   border-color: rgb(187 247 208 / var(--tw-border-opacity, 1));
+}
+
+.border-pink-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(236 72 153 / var(--tw-border-opacity, 1));
 }
 
 .border-pink-600 {
@@ -1221,6 +1271,11 @@ video {
 .bg-amber-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 243 199 / var(--tw-bg-opacity, 1));
+}
+
+.bg-amber-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 251 235 / var(--tw-bg-opacity, 1));
 }
 
 .bg-black\/40 {
@@ -1517,10 +1572,6 @@ video {
      object-position: center;
 }
 
-.p-10 {
-  padding: 2.5rem;
-}
-
 .p-2 {
   padding: 0.5rem;
 }
@@ -1636,6 +1687,10 @@ video {
   padding-top: 0.5rem;
 }
 
+.pt-3 {
+  padding-top: 0.75rem;
+}
+
 .pt-6 {
   padding-top: 1.5rem;
 }
@@ -1717,6 +1772,11 @@ video {
 .text-amber-600 {
   --tw-text-opacity: 1;
   color: rgb(217 119 6 / var(--tw-text-opacity, 1));
+}
+
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
 }
 
 .text-blue-600 {
@@ -1929,60 +1989,60 @@ video {
 
 /* shimmer skeleton */
 
-@keyframes shimmer{
-  0%{
-    background-position:-200% 0
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
   }
 
-  100%{
-    background-position:200% 0
+  100% {
+    background-position: 200% 0;
   }
 }
 
-.skeleton{
-  position:relative;
-  overflow:hidden;
-  border-radius:0.75rem;
-  background:linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 37%,#f3f4f6 63%);
-  background-size:400% 100%;
-  animation:shimmer 1.4s infinite linear;
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s infinite linear;
 }
 
-#fabEmergency{
+#fabEmergency {
   position: fixed !important;
   right: 24px !important;
   bottom: 24px !important;
   left: auto !important;
 }
 
-.pulse{
-  position:relative
+.pulse {
+  position: relative;
 }
 
-.pulse::after{
-  content:"";
-  position:absolute;
-  inset:-6px;
-  border-radius:999px;
-  border:2px solid #ef4444;
-  opacity:.6;
-  animation:pulse 1.5s infinite
+.pulse::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 2px solid #ef4444;
+  opacity: 0.6;
+  animation: pulse 1.5s infinite;
 }
 
-@keyframes pulse{
-  0%{
-    transform:scale(.9);
-    opacity:.6
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
   }
 
-  70%{
-    transform:scale(1.2);
-    opacity:.15
+  70% {
+    transform: scale(1.2);
+    opacity: 0.15;
   }
 
-  100%{
-    transform:scale(.9);
-    opacity:0
+  100% {
+    transform: scale(0.9);
+    opacity: 0;
   }
 }
 
@@ -2006,12 +2066,13 @@ video {
 }
 
 .nav-link:hover {
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
   --tw-text-opacity: 1;
   color: rgb(219 39 119 / var(--tw-text-opacity, 1));
 }
 
 .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0px;
   left: 50%;
@@ -2020,11 +2081,17 @@ video {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
   --tw-gradient-from: #ec4899 var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(236 72 153 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   --tw-gradient-to: #e11d48 var(--tw-gradient-to-position);
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+  --tw-gradient-from: #3b82f6 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(59 130 246 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-to: #06b6d4 var(--tw-gradient-to-position);
+  --tw-gradient-from: #2563eb var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(37 99 235 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: #06b6d4 var(--tw-gradient-to-position);
   transform: translateX(-50%);
 }
 
@@ -2085,7 +2152,7 @@ video {
 }
 
 .nav-link-doctor::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0px;
   left: 50%;
@@ -2125,8 +2192,9 @@ video {
 
 .article-indicator.active {
   width: 1.5rem;
-  --tw-bg-opacity: 1;
   background-color: rgb(219 39 119 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
 }
 
 /* Custom scrollbar untuk modal emergency */
@@ -2152,6 +2220,365 @@ video {
 
 #modalEmergency .overflow-y-auto::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
+}
+
+/* ============================================
+   THEME OVERRIDE: PINK → BLUE (GLOBAL)
+   ============================================ */
+
+/* Utilitas text */
+
+.text-pink-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+
+.text-pink-700 {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+/* Utilitas background */
+
+.bg-pink-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+
+.bg-pink-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+
+.bg-pink-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 197 253 / var(--tw-bg-opacity, 1));
+}
+
+.bg-pink-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+
+.bg-pink-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+
+/* Utilitas border */
+
+.border-pink-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+
+/* Hover text */
+
+.hover\:text-pink-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-pink-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+/* Hover background */
+
+.hover\:bg-pink-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-pink-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+
+/* Gradient dari/ke pink & rose */
+
+.from-pink-500 {
+  --tw-gradient-from: #3b82f6 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(59 130 246 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-pink-600 {
+  --tw-gradient-from: #2563eb var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(37 99 235 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-rose-50 {
+  --tw-gradient-from: #eff6ff var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-rose-600 {
+  --tw-gradient-to: #06b6d4 var(--tw-gradient-to-position);
+}
+
+/* Hover gradient (dipakai tombol utama) */
+
+.hover\:from-pink-700:hover {
+  --tw-gradient-from: #1d4ed8 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(29 78 216 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.hover\:to-rose-700:hover {
+  --tw-gradient-to: #0891b2 var(--tw-gradient-to-position);
+}
+
+/* Warna rose lembut → biru lembut */
+
+.border-rose-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+
+.bg-rose-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-rose-50\/40 {
+  background-color: rgb(239 246 255 / 0.4);
+}
+
+/* =========================
+   Spesifik komponen custom
+   ========================= */
+
+/* Nav-link utama (user) – hover & garis bawah */
+
+.nav-link:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+
+.nav-link::after {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  --tw-gradient-from: #3b82f6 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(59 130 246 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: #0891b2 var(--tw-gradient-to-position);
+}
+
+/* Titik indikator artikel (carousel) */
+
+.article-indicator.active {
+  width: 1.5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity, 1));
+}
+
+/* OVERRIDE NAVBAR CARI DOKTER (HALAMAN doctors.html) */
+
+.compact-nav .nav-item.active {
+  background-color: #eff6ff !important;
+  /* blue-50 */
+  color: #2563eb !important;
+  /* blue-600 */
+  font-weight: 600;
+}
+
+.compact-nav .nav-item:hover {
+  background-color: #e0ecff !important;
+  /* sedikit lebih gelap saat hover */
+}
+
+/* ============================================
+   GLOBAL BACKGROUND THEME
+   ============================================ */
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f1f6ff 0%, #ffffff 40%, #f1f6ff 100%);
+  background-attachment: fixed;
+}
+
+/* ============================================
+   THEME OVERRIDE: PINK / ROSE → BLUE
+   ============================================ */
+
+/* TEXT */
+
+.text-pink-500,
+.text-pink-600,
+.text-pink-700,
+.text-rose-500,
+.text-rose-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+
+/* BACKGROUND (solid) */
+
+.bg-pink-50,
+.bg-pink-100,
+.bg-rose-50,
+.bg-rose-50\/40 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-pink-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 197 253 / var(--tw-bg-opacity, 1));
+}
+
+.bg-pink-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+
+.bg-pink-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+
+/* BORDER */
+
+.border-pink-500,
+.border-pink-600,
+.border-rose-100,
+.border-rose-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
+}
+
+/* HOVER TEXT */
+
+.hover\:text-pink-600:hover,
+.hover\:text-pink-700:hover,
+.group-hover\:text-pink-600,
+.group-hover\:text-pink-700 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+
+/* HOVER BACKGROUND */
+
+.hover\:bg-pink-50:hover,
+.hover\:bg-pink-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-pink-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-pink-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+
+/* GRADIENT FROM / TO (hero, tombol Masuk, dll) */
+
+.from-pink-500,
+.from-pink-600 {
+  --tw-gradient-from: #2563eb var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(37 99 235 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-rose-50 {
+  --tw-gradient-from: #eff6ff var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-rose-50,
+.to-rose-100 {
+  --tw-gradient-to: #dbeafe var(--tw-gradient-to-position);
+}
+
+.to-rose-600 {
+  --tw-gradient-to: #06b6d4 var(--tw-gradient-to-position);
+}
+
+/* FOCUS RING & BORDER (input, select, radio) */
+
+.focus\:ring-pink-500:focus,
+.focus\:ring-pink-600:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(37 99 235 / var(--tw-ring-opacity));
+  /* blue-600 */
+}
+
+.focus\:border-pink-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+  /* blue-500 */
+}
+
+/* DOT CAROUSEL YANG TADINYA PINK */
+
+.article-indicator.active {
+  width: 1.5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+
+/* NAVBAR GLOBAL (kalau masih pakai nav-link lama) */
+
+.nav-link {
+  position: relative;
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.nav-link:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  height: 0.125rem;
+  width: 0px;
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  --tw-gradient-from: #3b82f6 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(59 130 246 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: #06b6d4 var(--tw-gradient-to-position);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 75%;
+}
+
+/* KHUSUS NAV "CARI DOKTER" YANG MASIH PINK (#fdf2f8 / #db2777) */
+
+body[data-page="doctors"] .compact-nav .nav-item.active {
+  background-color: #eff6ff;
+  /* blue-50 */
+  color: #2563eb;
+  /* blue-600 */
+  font-weight: 600;
 }
 
 .last\:border-b-0:last-child {
@@ -2240,6 +2667,11 @@ video {
 .hover\:text-blue-600:hover {
   --tw-text-opacity: 1;
   color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-gray-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
 }
 
 .hover\:text-gray-800:hover {
@@ -2405,6 +2837,10 @@ video {
     display: flex;
   }
 
+  .md\:h-64 {
+    height: 16rem;
+  }
+
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2415,6 +2851,19 @@ video {
 
   .md\:flex-row {
     flex-direction: row;
+  }
+
+  .md\:items-center {
+    align-items: center;
+  }
+
+  .md\:justify-between {
+    justify-content: space-between;
+  }
+
+  .md\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
   }
 }
 
@@ -2448,5 +2897,3 @@ video {
     padding-right: 2rem;
   }
 }
-
-

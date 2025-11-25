@@ -39,9 +39,24 @@
   </head>
   <body class="bg-white text-gray-900" data-page="doctors">
     <header class="border-b">
-      <div class="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
-        <a href="/" class="font-semibold text-xl text-pink-600">halodoc</a>
-        
+      <div
+        class="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between"
+      >
+        <a href="/" class="flex items-center gap-3 group">
+          <div
+            class="w-8 h-8 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 grid place-items-center text-white font-bold shadow-md transition-transform group-hover:scale-105"
+          >
+            H
+          </div>
+          <div class="flex flex-col">
+            <span
+              class="text-xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent"
+              >halodoc</span
+            >
+            <span class="text-[10px] text-gray-500 -mt-1">Health Solution</span>
+          </div>
+        </a>
+
         <!-- Navbar Compact -->
         <nav class="compact-nav flex-1 mx-4">
           <a href="/" class="nav-item">Beranda</a>
@@ -85,13 +100,17 @@
             class="flex-1 rounded-xl border px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
             placeholder="Cari nama dokter/spesialis..."
           />
-          <select class="rounded-xl border px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors">
+          <select
+            class="rounded-xl border px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
+          >
             <option>Semua Spesialis</option>
             <option>Sp. Anak</option>
             <option>Sp. Kulit</option>
             <option>Sp. Mata</option>
           </select>
-          <select class="rounded-xl border px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors">
+          <select
+            class="rounded-xl border px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
+          >
             <option>Semua Jadwal</option>
             <option>Tersedia Sekarang</option>
             <option>Malam Ini</option>
@@ -102,6 +121,70 @@
       <h2 class="mt-6 text-xl font-semibold">Dokter Tersedia</h2>
       <!-- HOLDER: JS akan render skeleton lalu list dokter -->
       <div class="mt-4" data-skeleton-holder></div>
+
+      <!-- MODAL DETAIL DOKTER -->
+      <div
+        id="doctorDetailModal"
+        class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden"
+      >
+        <div
+          class="bg-white rounded-2xl max-w-lg w-full mx-4 p-6 relative shadow-xl"
+        >
+          <!-- Tombol close -->
+          <button
+            type="button"
+            class="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
+            data-close-doctor-modal
+          >
+            ✕
+          </button>
+
+          <div class="flex items-center gap-4 mb-4">
+            <img
+              id="detailPhoto"
+              src=""
+              alt="Foto dokter"
+              class="w-16 h-16 rounded-full object-cover border"
+            />
+            <div>
+              <h3 id="detailName" class="text-xl font-semibold"></h3>
+              <p id="detailSpec" class="text-sm text-gray-600"></p>
+            </div>
+          </div>
+
+          <div class="space-y-4 text-sm text-gray-700">
+            <div>
+              <p class="font-semibold mb-1">Pengalaman</p>
+              <p id="detailExperience"></p>
+            </div>
+            <div>
+              <p class="font-semibold mb-1">Riwayat Pendidikan</p>
+              <p id="detailEducation"></p>
+            </div>
+            <div>
+              <p class="font-semibold mb-1">Fasilitas / Tempat Praktik</p>
+              <p id="detailWorkplaces"></p>
+            </div>
+          </div>
+
+          <div class="mt-6 flex gap-3">
+            <a
+              id="detailChatLink"
+              href="#"
+              class="flex-1 px-4 py-2 rounded-xl bg-pink-600 text-white text-sm font-medium text-center hover:bg-pink-700 transition-colors"
+            >
+              Mulai Konsultasi
+            </a>
+            <button
+              type="button"
+              class="px-4 py-2 rounded-xl border text-sm text-gray-700 hover:bg-gray-50"
+              data-close-doctor-modal
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
 
     <!-- FOOTER GLOBAL -->
@@ -123,19 +206,19 @@
             <p>021-5095-9900</p>
           </div>
           <div class="mt-4 flex gap-3">
-            <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors"
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
               >📷</a
             >
-            <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors"
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
               >🎵</a
             >
-            <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors"
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
               >▶️</a
             >
-            <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors"
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
               >𝕏</a
             >
-            <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors"
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
               >f</a
             >
           </div>
@@ -144,12 +227,12 @@
         <div>
           <p class="font-semibold">Bantuan & Panduan</p>
           <ul class="mt-3 space-y-2 text-sm text-gray-600">
-            <li><a href="#" class="hover:text-pink-600 transition-colors">Pusat Bantuan</a></li>
+            <li><a href="#" class="hover:text-pink-600">Pusat Bantuan</a></li>
             <li>
-              <a href="#" class="hover:text-pink-600 transition-colors">Syarat & Ketentuan</a>
+              <a href="#" class="hover:text-pink-600">Syarat & Ketentuan</a>
             </li>
             <li>
-              <a href="#" class="hover:text-pink-600 transition-colors">Kebijakan Privasi</a>
+              <a href="#" class="hover:text-pink-600">Kebijakan Privasi</a>
             </li>
           </ul>
         </div>
@@ -157,14 +240,14 @@
         <div>
           <p class="font-semibold">Halodoc</p>
           <ul class="mt-3 space-y-2 text-sm text-gray-600">
-            <li><a href="#" class="hover:text-pink-600 transition-colors">Tentang Kami</a></li>
+            <li><a href="#" class="hover:text-pink-600">Tentang Kami</a></li>
             <li>
-              <a href="/pages/articles.html" class="hover:text-pink-600 transition-colors"
+              <a href="/pages/articles.html" class="hover:text-pink-600"
                 >Kamus/Artikel Kesehatan</a
               >
             </li>
             <li>
-              <a href="/pages/pharmacy.html" class="hover:text-pink-600 transition-colors"
+              <a href="/pages/pharmacy.html" class="hover:text-pink-600"
                 >Promo Toko Kesehatan</a
               >
             </li>
@@ -174,11 +257,11 @@
         <div>
           <p class="font-semibold">Karier & Kolaborasi</p>
           <ul class="mt-3 space-y-2 text-sm text-gray-600">
-            <li><a href="#" class="hover:text-pink-600 transition-colors">Karier</a></li>
+            <li><a href="#" class="hover:text-pink-600">Karier</a></li>
             <li>
-              <a href="#" class="hover:text-pink-600 transition-colors">Affiliate Program</a>
+              <a href="#" class="hover:text-pink-600">Affiliate Program</a>
             </li>
-            <li><a href="#" class="hover:text-pink-600 transition-colors">Bug Bounty</a></li>
+            <li><a href="#" class="hover:text-pink-600">Bug Bounty</a></li>
           </ul>
         </div>
       </div>
@@ -187,11 +270,8 @@
         <div
           class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 text-xs text-gray-500 flex items-center justify-between"
         >
-          <p>
-            © 2016–<span id="yearNow"></span>, Prototype akademik Kelompok 3.
-            Tidak untuk komersial.
-          </p>
-          <p>Dianjurkan (dummy) • Kemenkes</p>
+          <p>© 2025, by Kelompok 3. Untuk Tugas Rekayasa Perangkat Lunak</p>
+          <p>Didukung oleh Kemenkes</p>
         </div>
       </div>
     </footer>
@@ -199,16 +279,16 @@
     <script src="/js/main.js"></script>
     <script>
       // Script untuk highlight halaman aktif
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener("DOMContentLoaded", function () {
         const currentPage = window.location.pathname;
-        const navItems = document.querySelectorAll('.nav-item');
-        
-        navItems.forEach(item => {
-          const href = item.getAttribute('href');
-          if (currentPage.includes(href) && href !== '/') {
-            item.classList.add('active');
-          } else if (currentPage === '/' && href === '/') {
-            item.classList.add('active');
+        const navItems = document.querySelectorAll(".nav-item");
+
+        navItems.forEach((item) => {
+          const href = item.getAttribute("href");
+          if (currentPage.includes(href) && href !== "/") {
+            item.classList.add("active");
+          } else if (currentPage === "/" && href === "/") {
+            item.classList.add("active");
           }
         });
       });

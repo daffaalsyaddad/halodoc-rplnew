@@ -1,279 +1,379 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kelola Profil – Halodoc Lite</title>
-  <link href="/dist/output.css" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon2.svg">
-  <link rel="shortcut icon" href="../assets/icons/favicon2.svg">
-</head>
-<body class="bg-white text-gray-900" data-page="profile">
-  <header class="border-b">
-    <div class="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
-      <a href="/" class="font-semibold text-xl text-pink-600">halodoc</a>
-      <div id="userAuthSection">
-        <!-- Diisi oleh JavaScript -->
-      </div>
-    </div>
-  </header>
-
-  <main class="mx-auto max-w-3xl px-4 py-8">
-    <!-- Header Profil -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Kelola Profil</h1>
-      <p class="text-gray-600 mt-2">Kelola informasi profil Anda untuk pengalaman yang lebih personal</p>
-    </div>
-
-    <!-- Form Edit Profil -->
-    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-      <div class="px-6 py-5 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-800">Informasi Pribadi</h2>
-        <p class="text-sm text-gray-600 mt-1">Perbarui informasi pribadi Anda di sini</p>
-      </div>
-      
-      <form id="profileForm" class="p-6">
-        <div id="profileError" class="hidden mb-4 p-3 rounded-lg bg-red-50 border border-red-200">
-          <p id="errorText" class="text-red-700 text-sm"></p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Nama Lengkap -->
-          <div>
-            <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-            <input 
-              type="text" 
-              id="fullName" 
-              name="fullName"
-              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
-              placeholder="Masukkan nama lengkap"
-              required
-            >
-          </div>
-          
-          <!-- Tanggal Lahir -->
-          <div>
-            <label for="birthDate" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
-            <input 
-              type="date" 
-              id="birthDate" 
-              name="birthDate"
-              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
-              required
-            >
-          </div>
-          
-          <!-- Jenis Kelamin -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
-            <div class="flex space-x-4">
-              <label class="flex items-center">
-                <input type="radio" name="gender" value="Laki-laki" class="mr-2 text-pink-600 focus:ring-pink-500">
-                <span class="text-gray-700">Laki-laki</span>
-              </label>
-              <label class="flex items-center">
-                <input type="radio" name="gender" value="Perempuan" class="mr-2 text-pink-600 focus:ring-pink-500">
-                <span class="text-gray-700">Perempuan</span>
-              </label>
-            </div>
-          </div>
-          
-          <!-- Nomor Ponsel -->
-          <div>
-            <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-1">Nomor Ponsel</label>
-            <input 
-              type="tel" 
-              id="phoneNumber" 
-              name="phoneNumber"
-              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
-              placeholder="Contoh: 081234567890"
-              required
-            >
-          </div>
-          
-          <!-- Email -->
-          <div class="md:col-span-2">
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              name="email"
-              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
-              placeholder="nama@contoh.com"
-              required
-            >
-          </div>
-        </div>
-        
-        <!-- Tombol Aksi -->
-        <div class="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-gray-200">
-          <button 
-            type="submit" 
-            id="saveProfileBtn"
-            class="flex-1 px-6 py-3 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kelola Profil – Halodoc Lite</title>
+    <link href="/dist/output.css" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon2.svg" />
+    <link rel="shortcut icon" href="../assets/icons/favicon2.svg" />
+  </head>
+  <body class="bg-white text-gray-900" data-page="profile">
+    <header class="border-b">
+      <div
+        class="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between"
+      >
+        <a href="/" class="flex items-center gap-3 group">
+          <div
+            class="w-8 h-8 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 grid place-items-center text-white font-bold shadow-md transition-transform group-hover:scale-105"
           >
-            Simpan Perubahan
-          </button>
-          <a 
-            href="/pages/doctors.html" 
-            class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 text-center transition-colors"
-          >
-            Cari Dokter
-          </a>
-          <button 
-            type="button" 
-            id="logoutBtn"
-            class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors"
-          >
-            Keluar
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Riwayat Aktivitas -->
-    <section class="mt-10 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-      <div class="px-6 py-5 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-800">Riwayat Aktivitas</h2>
-        <p class="text-sm text-gray-600 mt-1">Aktivitas terbaru Anda di Halodoc</p>
-      </div>
-      
-      <div class="p-6">
-        <div class="space-y-4">
-          <div class="flex items-start gap-4 p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
-            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-              </svg>
-            </div>
-            <div class="flex-1">
-              <p class="font-medium text-gray-900">Konsultasi dengan dr. Andi, Sp.A</p>
-              <p class="text-sm text-gray-600 mt-1">2 hari lalu</p>
-            </div>
-            <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Selesai</span>
+            H
           </div>
-          
-          <div class="flex items-start gap-4 p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
-            <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
-            <div class="flex-1">
-              <p class="font-medium text-gray-900">Pembelian Neurobion Forte</p>
-              <p class="text-sm text-gray-600 mt-1">1 minggu lalu</p>
-            </div>
-            <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Terkirim</span>
+          <div class="flex flex-col">
+            <span
+              class="text-xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent"
+              >halodoc</span
+            >
+            <span class="text-[10px] text-gray-500 -mt-1">Health Solution</span>
           </div>
-        </div>
-        
-        <div class="mt-6 text-center">
-          <a href="#" class="text-pink-600 font-medium hover:text-pink-700 transition-colors">Lihat semua riwayat</a>
+        </a>
+        <div id="userAuthSection">
+          <!-- Diisi oleh JavaScript -->
         </div>
       </div>
-    </section>
-  </main>
+    </header>
 
-  <script src="/js/main.js"></script>
-  <script>
-    // JavaScript khusus untuk halaman profil
-    document.addEventListener('DOMContentLoaded', function() {
-      const profileForm = document.getElementById('profileForm');
-      const profileError = document.getElementById('profileError');
-      const errorText = document.getElementById('errorText');
-      const saveProfileBtn = document.getElementById('saveProfileBtn');
-      const logoutBtn = document.getElementById('logoutBtn');
-      
-      // Ambil data user dari localStorage
-      const user = getUser();
-      
-      // Jika user belum login, redirect ke halaman login
-      if (!user) {
-        window.location.href = '/pages/login.html';
-        return;
-      }
-      
-      // Isi form dengan data user yang ada
-      if (user) {
-        document.getElementById('fullName').value = user.name || '';
-        document.getElementById('email').value = user.email || '';
-        
-        // Isi data tambahan jika tersimpan
-        if (user.birthDate) document.getElementById('birthDate').value = user.birthDate;
-        if (user.phoneNumber) document.getElementById('phoneNumber').value = user.phoneNumber;
+    <main class="mx-auto max-w-3xl px-4 py-8">
+      <!-- Header Profil -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Kelola Profil</h1>
+        <p class="text-gray-600 mt-2">
+          Kelola informasi profil Anda untuk pengalaman yang lebih personal
+        </p>
+      </div>
+
+      <!-- Form Edit Profil -->
+      <div
+        class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm"
+      >
+        <div class="px-6 py-5 border-b border-gray-200">
+          <h2 class="text-xl font-semibold text-gray-800">Informasi Pribadi</h2>
+          <p class="text-sm text-gray-600 mt-1">
+            Perbarui informasi pribadi Anda di sini
+          </p>
+        </div>
+
+        <form id="profileForm" class="p-6">
+          <div
+            id="profileError"
+            class="hidden mb-4 p-3 rounded-lg bg-red-50 border border-red-200"
+          >
+            <p id="errorText" class="text-red-700 text-sm"></p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Nama Lengkap -->
+            <div>
+              <label
+                for="fullName"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Nama Lengkap</label
+              >
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
+                placeholder="Masukkan nama lengkap"
+                required
+              />
+            </div>
+
+            <!-- Tanggal Lahir -->
+            <div>
+              <label
+                for="birthDate"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Tanggal Lahir</label
+              >
+              <input
+                type="date"
+                id="birthDate"
+                name="birthDate"
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
+                required
+              />
+            </div>
+
+            <!-- Jenis Kelamin -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Jenis Kelamin</label
+              >
+              <div class="flex space-x-4">
+                <label class="flex items-center">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Laki-laki"
+                    class="mr-2 text-pink-600 focus:ring-pink-500"
+                  />
+                  <span class="text-gray-700">Laki-laki</span>
+                </label>
+                <label class="flex items-center">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Perempuan"
+                    class="mr-2 text-pink-600 focus:ring-pink-500"
+                  />
+                  <span class="text-gray-700">Perempuan</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Nomor Ponsel -->
+            <div>
+              <label
+                for="phoneNumber"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Nomor Ponsel</label
+              >
+              <input
+                type="tel"
+                id="phoneNumber"
+                name="phoneNumber"
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
+                placeholder="Contoh: 081234567890"
+                required
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="md:col-span-2">
+              <label
+                for="email"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
+                placeholder="nama@contoh.com"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Tombol Aksi -->
+          <div
+            class="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-gray-200"
+          >
+            <button
+              type="submit"
+              id="saveProfileBtn"
+              class="flex-1 px-6 py-3 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
+            >
+              Simpan Perubahan
+            </button>
+            <a
+              href="/pages/doctors.html"
+              class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 text-center transition-colors"
+            >
+              Cari Dokter
+            </a>
+            <button
+              type="button"
+              id="logoutBtn"
+              class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors"
+            >
+              Keluar
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Riwayat Aktivitas -->
+      <section
+        class="mt-10 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm"
+      >
+        <div class="px-6 py-5 border-b border-gray-200">
+          <h2 class="text-xl font-semibold text-gray-800">Riwayat Aktivitas</h2>
+          <p class="text-sm text-gray-600 mt-1">
+            Aktivitas terbaru Anda di Halodoc
+          </p>
+        </div>
+
+        <div class="p-6">
+          <div class="space-y-4">
+            <div
+              class="flex items-start gap-4 p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+            >
+              <div
+                class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                  />
+                </svg>
+              </div>
+              <div class="flex-1">
+                <p class="font-medium text-gray-900">
+                  Konsultasi dengan dr. Andi, Sp.A
+                </p>
+                <p class="text-sm text-gray-600 mt-1">2 hari lalu</p>
+              </div>
+              <span
+                class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full"
+                >Selesai</span
+              >
+            </div>
+
+            <div
+              class="flex items-start gap-4 p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+            >
+              <div
+                class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-amber-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+              </div>
+              <div class="flex-1">
+                <p class="font-medium text-gray-900">
+                  Pembelian Neurobion Forte
+                </p>
+                <p class="text-sm text-gray-600 mt-1">1 minggu lalu</p>
+              </div>
+              <span
+                class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full"
+                >Terkirim</span
+              >
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <a
+              href="#"
+              class="text-pink-600 font-medium hover:text-pink-700 transition-colors"
+              >Lihat semua riwayat</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const profileForm = document.getElementById("profileForm");
+        const profileError = document.getElementById("profileError");
+        const errorText = document.getElementById("errorText");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        const user = getUser();
+
+        // Kalau belum login, tendang ke login
+        if (!user) {
+          window.location.href = "/pages/login.html";
+          return;
+        }
+
+        // Isi form dari user
+        const nameInput = document.getElementById("fullName");
+        const birthInput = document.getElementById("birthDate");
+        const phoneInput = document.getElementById("phoneNumber");
+        const emailInput = document.getElementById("email");
+
+        nameInput.value = user.fullName || user.name || "";
+        emailInput.value = user.email || "";
+        phoneInput.value = user.phoneNumber || "";
+        if (user.birthDate) birthInput.value = user.birthDate;
+
         if (user.gender) {
-          const genderRadio = document.querySelector(`input[name="gender"][value="${user.gender}"]`);
+          const genderRadio = document.querySelector(
+            `input[name="gender"][value="${user.gender}"]`
+          );
           if (genderRadio) genderRadio.checked = true;
         }
-      }
-      
-      // Handle form submission
-      profileForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Ambil nilai dari form
-        const fullName = document.getElementById('fullName').value.trim();
-        const birthDate = document.getElementById('birthDate').value;
-        const gender = document.querySelector('input[name="gender"]:checked')?.value;
-        const phoneNumber = document.getElementById('phoneNumber').value.trim();
-        const email = document.getElementById('email').value.trim();
-        
-        // Validasi form
-        if (!fullName || !birthDate || !gender || !phoneNumber || !email) {
-          errorText.textContent = 'Harap lengkapi semua data yang diperlukan.';
-          profileError.classList.remove('hidden');
-          return;
-        }
-        
-        // Validasi nomor telepon (minimal 10 digit)
-        if (phoneNumber.length < 10) {
-          errorText.textContent = 'Nomor telepon harus minimal 10 digit.';
-          profileError.classList.remove('hidden');
-          return;
-        }
-        
-        // Validasi email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          errorText.textContent = 'Format email tidak valid.';
-          profileError.classList.remove('hidden');
-          return;
-        }
-        
-        // Simpan data ke localStorage
-        const updatedUser = {
-          ...user,
-          name: fullName,
-          birthDate: birthDate,
-          gender: gender,
-          phoneNumber: phoneNumber,
-          email: email,
-          updatedAt: new Date().toISOString()
-        };
-        
-        setUser(updatedUser);
-        
-        // Tampilkan pesan sukses
-        showToast('Profil berhasil diperbarui!');
-        
-        // Sembunyikan pesan error jika ada
-        profileError.classList.add('hidden');
-        
-        // Update navbar
-        renderUserInNavbar();
+
+        // Submit form
+        profileForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const fullName = nameInput.value.trim();
+          const birthDate = birthInput.value;
+          const gender = document.querySelector(
+            'input[name="gender"]:checked'
+          )?.value;
+          const phoneNumber = phoneInput.value.trim();
+          const email = emailInput.value.trim();
+
+          // Validasi simpel
+          if (!fullName || !birthDate || !gender || !phoneNumber || !email) {
+            errorText.textContent =
+              "Harap lengkapi semua data yang diperlukan.";
+            profileError.classList.remove("hidden");
+            return;
+          }
+
+          if (phoneNumber.length < 10) {
+            errorText.textContent = "Nomor telepon harus minimal 10 digit.";
+            profileError.classList.remove("hidden");
+            return;
+          }
+
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            errorText.textContent = "Format email tidak valid.";
+            profileError.classList.remove("hidden");
+            return;
+          }
+
+          // Simpan ke localStorage
+          const updatedUser = {
+            ...user,
+            fullName: fullName, // nama utama dari profil
+            name: fullName, // biar kompatibel kalau ada kode lama yang pakai "name"
+            birthDate,
+            gender,
+            phoneNumber,
+            email,
+            updatedAt: new Date().toISOString(),
+          };
+
+          setUser(updatedUser);
+          profileError.classList.add("hidden");
+          showToast("Profil berhasil diperbarui!");
+
+          // Update navbar di halaman ini
+          renderUserInNavbar();
+        });
+
+        // Logout
+        logoutBtn.addEventListener("click", function () {
+          if (confirm("Apakah Anda yakin ingin keluar?")) {
+            clearUser();
+            showToast("Anda telah berhasil keluar");
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 1000);
+          }
+        });
       });
-      
-      // Handle logout
-      logoutBtn.addEventListener('click', function() {
-        if (confirm('Apakah Anda yakin ingin keluar?')) {
-          clearUser();
-          showToast('Anda telah berhasil keluar');
-          setTimeout(() => {
-            window.location.href = '/';
-          }, 1000);
-        }
-      });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

@@ -1,685 +1,1021 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard Dokter – Halodoc Lite</title>
-  <link href="/dist/output.css" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon2.svg">
-  <link rel="shortcut icon" href="../assets/icons/favicon2.svg">
-  <style>
-    .nav-link-doctor {
-      @apply px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative;
-    }
-    .nav-link-doctor .nav-text {
-      @apply relative z-10;
-    }
-    .nav-link-doctor::after {
-      content: '';
-      @apply absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300;
-      transform: translateX(-50%);
-    }
-    .nav-link-doctor:hover::after {
-      @apply w-3/4;
-    }
-    .skeleton {
-      @apply bg-gray-200 animate-pulse rounded;
-    }
-  </style>
-</head>
-<body class="bg-white text-gray-900" data-page="doctor-dashboard">
-  
-  <!-- DOCTOR NAVBAR -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-gray-100 shadow-sm">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="h-16 flex items-center justify-between">
-        
-        <!-- Logo & Doctor Info Section -->
-        <div class="flex items-center gap-4">
-          <a href="/" class="flex items-center gap-3 group">
-            <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 grid place-items-center text-white font-bold shadow-md transition-transform group-hover:scale-105">
-              H
-            </div>
-            <div class="flex flex-col">
-              <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">halodoc</span>
-              <span class="text-[10px] text-gray-500 -mt-1">Doctor Portal</span>
-            </div>
-          </a>
-          
-          <!-- Doctor Badge -->
-          <div class="hidden md:flex items-center gap-3 pl-4 border-l border-gray-200">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center">
-              <span class="text-blue-600 text-sm">👨‍⚕️</span>
-            </div>
-            <div class="flex flex-col">
-              <span class="text-sm font-semibold text-gray-900" id="doctorNameNav">dr. Andi, Sp.A</span>
-              <span class="text-xs text-gray-500" id="doctorHospitalNav">RS Awal Bros Pekanbaru</span>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard Dokter – Halodoc Lite</title>
+    <link href="/dist/output.css" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon2.svg" />
+    <link rel="shortcut icon" href="../assets/icons/favicon2.svg" />
+    <style>
+      .nav-link-doctor {
+        @apply px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative;
+      }
+      .nav-link-doctor .nav-text {
+        @apply relative z-10;
+      }
+      .nav-link-doctor::after {
+        content: "";
+        @apply absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300;
+        transform: translateX(-50%);
+      }
+      .nav-link-doctor:hover::after {
+        @apply w-3/4;
+      }
+      .skeleton {
+        @apply bg-gray-200 animate-pulse rounded;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-gray-900" data-page="doctor-dashboard">
+    <!-- DOCTOR NAVBAR -->
+    <header
+      class="sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-gray-100 shadow-sm"
+    >
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="h-16 flex items-center justify-between">
+          <!-- Logo & Doctor Info Section -->
+          <div class="flex items-center gap-4">
+            <a href="/" class="flex items-center gap-3 group">
+              <div
+                class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 grid place-items-center text-white font-bold shadow-md transition-transform group-hover:scale-105"
+              >
+                H
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent"
+                  >halodoc</span
+                >
+                <span class="text-[10px] text-gray-500 -mt-1"
+                  >Doctor Portal</span
+                >
+              </div>
+            </a>
+
+            <!-- Doctor Badge -->
+            <div
+              class="hidden md:flex items-center gap-3 pl-4 border-l border-gray-200"
+            >
+              <div
+                class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center"
+              >
+                <span class="text-blue-600 text-sm">👨‍⚕️</span>
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="text-sm font-semibold text-gray-900"
+                  id="doctorNameNav"
+                  >dr. Andi, Sp.A</span
+                >
+                <span class="text-xs text-gray-500" id="doctorHospitalNav"
+                  >RS Awal Bros Pekanbaru</span
+                >
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Navigation Menu -->
-        <nav class="hidden lg:flex items-center gap-1">
-          <a href="/pages/doctor-dashboard.html" class="nav-link-doctor group relative">
-            <span class="nav-text">Dashboard</span>
-          </a>
-          <a href="/pages/doctors.html" class="nav-link-doctor group relative">
-            <span class="nav-text">Cari Dokter</span>
-          </a>
-          <a href="/pages/pharmacy.html" class="nav-link-doctor group relative">
-            <span class="nav-text">Toko</span>
-          </a>
-          <a href="/pages/articles.html" class="nav-link-doctor group relative">
-            <span class="nav-text">Artikel</span>
-          </a>
-          
-          <!-- Quick Actions Dropdown -->
-          <div class="relative group">
-            <button class="nav-link-doctor flex items-center gap-1">
-              <span class="nav-text">Quick Actions</span>
-              <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          <!-- Navigation Menu -->
+          <nav class="hidden lg:flex items-center gap-1">
+            <a
+              href="/pages/doctor-dashboard.html"
+              class="nav-link-doctor group relative"
+            >
+              <span class="nav-text">Dashboard</span>
+            </a>
+            <a
+              href="/pages/doctors.html"
+              class="nav-link-doctor group relative"
+            >
+              <span class="nav-text">Cari Dokter</span>
+            </a>
+            <a
+              href="/pages/pharmacy.html"
+              class="nav-link-doctor group relative"
+            >
+              <span class="nav-text">Toko</span>
+            </a>
+            <a
+              href="/pages/articles.html"
+              class="nav-link-doctor group relative"
+            >
+              <span class="nav-text">Artikel</span>
+            </a>
+
+            <!-- Quick Actions Dropdown -->
+            <div class="relative group">
+              <button class="nav-link-doctor flex items-center gap-1">
+                <span class="nav-text">Quick Actions</span>
+                <svg
+                  class="w-4 h-4 transition-transform group-hover:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                class="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
+              >
+                <div class="py-2">
+                  <a
+                    href="#schedule"
+                    class="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center gap-2"
+                  >
+                    <span>📅</span> Jadwal Saya
+                  </a>
+                  <a
+                    href="#patients"
+                    class="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center gap-2"
+                  >
+                    <span>👥</span> Pasien Hari Ini
+                  </a>
+                  <a
+                    href="#diagnosis"
+                    class="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center gap-2"
+                  >
+                    <span>📝</span> Diagnosis Baru
+                  </a>
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          <!-- CTA Buttons -->
+          <div class="flex items-center gap-3">
+            <!-- Notification Bell -->
+            <button
+              class="relative p-2 text-gray-600 hover:text-blue-600 transition-colors group"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-5 5v-5zM10.24 8.56a5.97 5.97 0 01-4.66-7.5 5.97 5.97 0 017.5 4.66 5.97 5.97 0 01-2.84 2.84z"
+                ></path>
+              </svg>
+              <span
+                class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"
+              ></span>
+            </button>
+
+            <!-- Logout Button -->
+            <button
+              id="logoutBtn"
+              class="flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-300"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                ></path>
+              </svg>
+              Keluar
+            </button>
+
+            <!-- Mobile Menu Button -->
+            <button
+              id="mobileMenuButtonDoctor"
+              class="lg:hidden p-2 text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
               </svg>
             </button>
-            <div class="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-              <div class="py-2">
-                <a href="#schedule" class="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center gap-2">
-                  <span>📅</span> Jadwal Saya
-                </a>
-                <a href="#patients" class="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center gap-2">
-                  <span>👥</span> Pasien Hari Ini
-                </a>
-                <a href="#diagnosis" class="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center gap-2">
-                  <span>📝</span> Diagnosis Baru
-                </a>
-              </div>
-            </div>
           </div>
-        </nav>
+        </div>
+      </div>
 
-        <!-- CTA Buttons -->
-        <div class="flex items-center gap-3">
-          <!-- Notification Bell -->
-          <button class="relative p-2 text-gray-600 hover:text-blue-600 transition-colors group">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.24 8.56a5.97 5.97 0 01-4.66-7.5 5.97 5.97 0 017.5 4.66 5.97 5.97 0 01-2.84 2.84z"></path>
-            </svg>
-            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+      <!-- Mobile Menu for Doctor -->
+      <div
+        id="mobileMenuDoctor"
+        class="lg:hidden hidden bg-white border-t border-gray-100 shadow-lg"
+      >
+        <div class="px-4 py-3 space-y-1">
+          <div class="px-4 py-3 border-b border-gray-100 mb-2">
+            <p class="font-semibold text-gray-900" id="mobileDoctorName">
+              dr. Andi, Sp.A
+            </p>
+            <p class="text-sm text-gray-500" id="mobileDoctorHospital">
+              RS Awal Bros Pekanbaru
+            </p>
+          </div>
+          <a
+            href="/pages/doctor-dashboard.html"
+            class="block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors font-medium"
+            >Dashboard</a
+          >
+          <a
+            href="/pages/doctors.html"
+            class="block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors font-medium"
+            >Cari Dokter</a
+          >
+          <a
+            href="/pages/pharmacy.html"
+            class="block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors font-medium"
+            >Toko Kesehatan</a
+          >
+          <a
+            href="/pages/articles.html"
+            class="block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors font-medium"
+            >Artikel</a
+          >
+          <div class="border-t pt-2 mt-2">
+            <a
+              href="#schedule"
+              class="block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
+              >📅 Jadwal Saya</a
+            >
+            <a
+              href="#patients"
+              class="block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
+              >👥 Pasien Hari Ini</a
+            >
+            <a
+              href="#diagnosis"
+              class="block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
+              >📝 Diagnosis Baru</a
+            >
+          </div>
+        </div>
+      </div>
+    </header>
 
-          <!-- Logout Button -->
-          <button id="logoutBtn" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-300">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+    <!-- KONTEN UTAMA DASHBOARD -->
+    <main class="mx-auto max-w-7xl px-4 py-8">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-semibold">Dashboard Dokter</h1>
+          <p class="text-gray-600 mt-1">
+            Selamat datang, <span id="doctorName">dr. Andi, Sp.A</span>
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <button
+            id="addScheduleBtn"
+            class="px-4 py-2 rounded-xl bg-pink-600 text-white text-sm flex items-center gap-2"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              ></path>
             </svg>
-            Keluar
-          </button>
-
-          <!-- Mobile Menu Button -->
-          <button id="mobileMenuButtonDoctor" class="lg:hidden p-2 text-gray-600 hover:text-blue-600 transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
+            Tambah Jadwal
           </button>
         </div>
       </div>
-    </div>
 
-    <!-- Mobile Menu for Doctor -->
-    <div id="mobileMenuDoctor" class="lg:hidden hidden bg-white border-t border-gray-100 shadow-lg">
-      <div class="px-4 py-3 space-y-1">
-        <div class="px-4 py-3 border-b border-gray-100 mb-2">
-          <p class="font-semibold text-gray-900" id="mobileDoctorName">dr. Andi, Sp.A</p>
-          <p class="text-sm text-gray-500" id="mobileDoctorHospital">RS Awal Bros Pekanbaru</p>
-        </div>
-        <a href="/pages/doctor-dashboard.html" class="block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors font-medium">Dashboard</a>
-        <a href="/pages/doctors.html" class="block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors font-medium">Cari Dokter</a>
-        <a href="/pages/pharmacy.html" class="block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors font-medium">Toko Kesehatan</a>
-        <a href="/pages/articles.html" class="block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors font-medium">Artikel</a>
-        <div class="border-t pt-2 mt-2">
-          <a href="#schedule" class="block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm">📅 Jadwal Saya</a>
-          <a href="#patients" class="block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm">👥 Pasien Hari Ini</a>
-          <a href="#diagnosis" class="block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm">📝 Diagnosis Baru</a>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- KONTEN UTAMA DASHBOARD -->
-  <main class="mx-auto max-w-7xl px-4 py-8">
-    <div class="flex items-center justify-between mb-8">
-      <div>
-        <h1 class="text-3xl font-semibold">Dashboard Dokter</h1>
-        <p class="text-gray-600 mt-1">Selamat datang, <span id="doctorName">dr. Andi, Sp.A</span></p>
-      </div>
-      <div class="flex gap-3">
-        <button id="addScheduleBtn" class="px-4 py-2 rounded-xl bg-pink-600 text-white text-sm flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-          </svg>
-          Tambah Jadwal
-        </button>
-      </div>
-    </div>
-
-    <!-- Jadwal/Kegiatan Dokter -->
-    <div class="grid lg:grid-cols-3 gap-6">
-      <!-- Jadwal Praktik -->
-      <div class="lg:col-span-2">
-        <!-- Enhanced Schedule Section -->
-        <div class="rounded-2xl border p-6">
-          <div class="flex items-center justify-between mb-6">
-            <div>
-              <h2 class="text-xl font-semibold">Jadwal Praktik</h2>
-              <p class="text-sm text-gray-600 mt-1">Kelola jadwal praktik dan konsultasi</p>
-            </div>
-            <div class="flex gap-2">
-              <button id="refreshSchedule" class="px-3 py-2 rounded-lg border text-sm flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                </svg>
-                Refresh
-              </button>
-            </div>
-          </div>
-
-          <!-- Error Message Area -->
-          <div id="scheduleError" class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-200">
-            <p id="scheduleErrorText" class="text-red-700 text-sm"></p>
-          </div>
-
-          <div id="scheduleList" class="space-y-3">
-            <!-- diisi JavaScript -->
-          </div>
-
-          <!-- Enhanced Schedule Form -->
-          <div id="scheduleForm" class="hidden mt-6 p-4 rounded-xl bg-gray-50 border">
-            <h3 class="font-semibold mb-4" id="scheduleFormTitle">Tambah Jadwal Praktik Baru</h3>
-            <form id="scheduleFormElement" class="space-y-4">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-medium mb-2">Hari Praktik</label>
-                  <select id="scheduleDay" class="w-full rounded-xl border px-3 py-2" required>
-                    <option value="">Pilih Hari</option>
-                    <option value="senin">Senin</option>
-                    <option value="selasa">Selasa</option>
-                    <option value="rabu">Rabu</option>
-                    <option value="kamis">Kamis</option>
-                    <option value="jumat">Jumat</option>
-                    <option value="sabtu">Sabtu</option>
-                    <option value="minggu">Minggu</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium mb-2">Lokasi Layanan</label>
-                  <input type="text" id="scheduleLocation" class="w-full rounded-xl border px-3 py-2" 
-                         placeholder="Contoh: RS Awal Bros, Klinik Sehat" required>
-                </div>
-              </div>
-              
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-medium mb-2">Jam Mulai</label>
-                  <input type="time" id="scheduleStart" class="w-full rounded-xl border px-3 py-2" required>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium mb-2">Jam Selesai</label>
-                  <input type="time" id="scheduleEnd" class="w-full rounded-xl border px-3 py-2" required>
-                </div>
-              </div>
-
-              <div class="bg-blue-50 p-3 rounded-lg">
-                <p class="text-sm text-blue-700 flex items-center gap-2">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                  Pastikan jadwal tidak bentrok dengan jadwal lain
+      <!-- Jadwal/Kegiatan Dokter -->
+      <div class="grid lg:grid-cols-3 gap-6">
+        <!-- Jadwal Praktik -->
+        <div class="lg:col-span-2">
+          <!-- Enhanced Schedule Section -->
+          <div class="rounded-2xl border p-6">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="text-xl font-semibold">Jadwal Praktik</h2>
+                <p class="text-sm text-gray-600 mt-1">
+                  Kelola jadwal praktik dan konsultasi
                 </p>
               </div>
-
-              <div class="flex gap-3 pt-2">
-                <button type="button" id="cancelSchedule" class="flex-1 rounded-xl border py-3 font-medium">Batal</button>
-                <button type="submit" class="flex-1 rounded-xl bg-pink-600 text-white py-3 font-medium">
-                  Simpan Jadwal
+              <div class="flex gap-2">
+                <button
+                  id="refreshSchedule"
+                  class="px-3 py-2 rounded-lg border text-sm flex items-center gap-2"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    ></path>
+                  </svg>
+                  Refresh
                 </button>
               </div>
+            </div>
+
+            <!-- Error Message Area -->
+            <div
+              id="scheduleError"
+              class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-200"
+            >
+              <p id="scheduleErrorText" class="text-red-700 text-sm"></p>
+            </div>
+
+            <div id="scheduleList" class="space-y-3">
+              <!-- diisi JavaScript -->
+            </div>
+
+            <!-- Enhanced Schedule Form -->
+            <div
+              id="scheduleForm"
+              class="hidden mt-6 p-4 rounded-xl bg-gray-50 border"
+            >
+              <h3 class="font-semibold mb-4" id="scheduleFormTitle">
+                Tambah Jadwal Praktik Baru
+              </h3>
+              <form id="scheduleFormElement" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium mb-2"
+                      >Hari Praktik</label
+                    >
+                    <select
+                      id="scheduleDay"
+                      class="w-full rounded-xl border px-3 py-2"
+                      required
+                    >
+                      <option value="">Pilih Hari</option>
+                      <option value="senin">Senin</option>
+                      <option value="selasa">Selasa</option>
+                      <option value="rabu">Rabu</option>
+                      <option value="kamis">Kamis</option>
+                      <option value="jumat">Jumat</option>
+                      <option value="sabtu">Sabtu</option>
+                      <option value="minggu">Minggu</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-2"
+                      >Lokasi Layanan</label
+                    >
+                    <input
+                      type="text"
+                      id="scheduleLocation"
+                      class="w-full rounded-xl border px-3 py-2"
+                      placeholder="Contoh: RS Awal Bros, Klinik Sehat"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium mb-2"
+                      >Jam Mulai</label
+                    >
+                    <input
+                      type="time"
+                      id="scheduleStart"
+                      class="w-full rounded-xl border px-3 py-2"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-2"
+                      >Jam Selesai</label
+                    >
+                    <input
+                      type="time"
+                      id="scheduleEnd"
+                      class="w-full rounded-xl border px-3 py-2"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="bg-blue-50 p-3 rounded-lg">
+                  <p class="text-sm text-blue-700 flex items-center gap-2">
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                    Pastikan jadwal tidak bentrok dengan jadwal lain
+                  </p>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    id="cancelSchedule"
+                    class="flex-1 rounded-xl border py-3 font-medium"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    class="flex-1 rounded-xl bg-pink-600 text-white py-3 font-medium"
+                  >
+                    Simpan Jadwal
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Riwayat Pasien -->
+          <div class="rounded-2xl border p-6 mt-6">
+            <h2 class="text-xl font-semibold mb-6">Riwayat Pasien</h2>
+            <div id="patientHistory" class="space-y-4">
+              <!-- diisi JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar - Diagnosis & Resep -->
+        <div class="lg:col-span-1">
+          <div class="rounded-2xl border p-6">
+            <h2 class="text-xl font-semibold mb-6">Diagnosis & Resep</h2>
+
+            <form id="diagnosisForm" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium mb-2"
+                  >Pilih Pasien</label
+                >
+                <select
+                  id="selectPatient"
+                  class="w-full rounded-xl border px-3 py-2"
+                  required
+                >
+                  <option value="">Pilih Pasien</option>
+                  <!-- diisi JavaScript -->
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium mb-2">Diagnosis</label>
+                <textarea
+                  id="diagnosisText"
+                  class="w-full rounded-xl border px-3 py-2 h-24"
+                  placeholder="Tulis diagnosis..."
+                  required
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium mb-2">Resep Obat</label>
+                <textarea
+                  id="prescriptionText"
+                  class="w-full rounded-xl border px-3 py-2 h-32"
+                  placeholder="Tulis resep obat..."
+                  required
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full rounded-xl bg-pink-600 text-white py-3 font-semibold"
+              >
+                Simpan Diagnosis & Resep
+              </button>
             </form>
-          </div>
-        </div>
 
-        <!-- Riwayat Pasien -->
-        <div class="rounded-2xl border p-6 mt-6">
-          <h2 class="text-xl font-semibold mb-6">Riwayat Pasien</h2>
-          <div id="patientHistory" class="space-y-4">
-            <!-- diisi JavaScript -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Sidebar - Diagnosis & Resep -->
-      <div class="lg:col-span-1">
-        <div class="rounded-2xl border p-6">
-          <h2 class="text-xl font-semibold mb-6">Diagnosis & Resep</h2>
-          
-          <form id="diagnosisForm" class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium mb-2">Pilih Pasien</label>
-              <select id="selectPatient" class="w-full rounded-xl border px-3 py-2" required>
-                <option value="">Pilih Pasien</option>
-                <!-- diisi JavaScript -->
-              </select>
+            <div
+              id="diagnosisSuccess"
+              class="hidden mt-4 p-3 rounded-xl bg-green-50 border border-green-200"
+            >
+              <p class="text-green-700 text-sm">
+                Diagnosis dan resep berhasil disimpan ke database pasien.
+              </p>
             </div>
-
-            <div>
-              <label class="block text-sm font-medium mb-2">Diagnosis</label>
-              <textarea 
-                id="diagnosisText" 
-                class="w-full rounded-xl border px-3 py-2 h-24" 
-                placeholder="Tulis diagnosis..."
-                required
-              ></textarea>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium mb-2">Resep Obat</label>
-              <textarea 
-                id="prescriptionText" 
-                class="w-full rounded-xl border px-3 py-2 h-32" 
-                placeholder="Tulis resep obat..."
-                required
-              ></textarea>
-            </div>
-
-            <button type="submit" class="w-full rounded-xl bg-pink-600 text-white py-3 font-semibold">
-              Simpan Diagnosis & Resep
-            </button>
-          </form>
-
-          <div id="diagnosisSuccess" class="hidden mt-4 p-3 rounded-xl bg-green-50 border border-green-200">
-            <p class="text-green-700 text-sm">Diagnosis dan resep berhasil disimpan ke database pasien.</p>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <!-- FOOTER -->
-  <footer class="mt-16 border-t bg-gradient-to-b from-white to-rose-50">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <div>
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-full bg-pink-600 grid place-items-center text-white font-bold">
-            u
+    <!-- FOOTER -->
+    <footer class="mt-16 border-t bg-gradient-to-b from-white to-rose-50">
+      <div
+        class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+      >
+        <div>
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-full bg-pink-600 grid place-items-center text-white font-bold"
+            >
+              u
+            </div>
+            <span class="text-2xl font-semibold">halodoc</span>
           </div>
-          <span class="text-2xl font-semibold">halodoc</span>
+          <div class="mt-4 space-y-2 text-sm text-gray-600">
+            <p>help@halodoc.com</p>
+            <p>021-5095-9900</p>
+          </div>
+          <div class="mt-4 flex gap-3">
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
+              >📷</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
+              >🎵</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
+              >▶️</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
+              >𝕏</a
+            >
+            <a class="w-10 h-10 rounded-full border grid place-items-center"
+              >f</a
+            >
+          </div>
         </div>
-        <div class="mt-4 space-y-2 text-sm text-gray-600">
-          <p>help@halodoc.com</p>
-          <p>021-5095-9900</p>
+
+        <div>
+          <p class="font-semibold">Bantuan & Panduan</p>
+          <ul class="mt-3 space-y-2 text-sm text-gray-600">
+            <li><a href="#" class="hover:text-pink-600">Pusat Bantuan</a></li>
+            <li>
+              <a href="#" class="hover:text-pink-600">Syarat & Ketentuan</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-pink-600">Kebijakan Privasi</a>
+            </li>
+          </ul>
         </div>
-        <div class="mt-4 flex gap-3">
-          <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors">📷</a>
-          <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors">🎵</a>
-          <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors">▶️</a>
-          <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors">𝕏</a>
-          <a class="w-10 h-10 rounded-full border grid place-items-center hover:bg-gray-50 transition-colors">f</a>
+
+        <div>
+          <p class="font-semibold">Halodoc</p>
+          <ul class="mt-3 space-y-2 text-sm text-gray-600">
+            <li><a href="#" class="hover:text-pink-600">Tentang Kami</a></li>
+            <li>
+              <a href="/pages/articles.html" class="hover:text-pink-600"
+                >Kamus/Artikel Kesehatan</a
+              >
+            </li>
+            <li>
+              <a href="/pages/pharmacy.html" class="hover:text-pink-600"
+                >Promo Toko Kesehatan</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="font-semibold">Karier & Kolaborasi</p>
+          <ul class="mt-3 space-y-2 text-sm text-gray-600">
+            <li><a href="#" class="hover:text-pink-600">Karier</a></li>
+            <li>
+              <a href="#" class="hover:text-pink-600">Affiliate Program</a>
+            </li>
+            <li><a href="#" class="hover:text-pink-600">Bug Bounty</a></li>
+          </ul>
         </div>
       </div>
 
-      <div>
-        <p class="font-semibold">Bantuan & Panduan</p>
-        <ul class="mt-3 space-y-2 text-sm text-gray-600">
-          <li><a href="#" class="hover:text-pink-600 transition-colors">Pusat Bantuan</a></li>
-          <li><a href="#" class="hover:text-pink-600 transition-colors">Syarat & Ketentuan</a></li>
-          <li><a href="#" class="hover:text-pink-600 transition-colors">Kebijakan Privasi</a></li>
-        </ul>
+      <div class="border-t">
+        <div
+          class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 text-xs text-gray-500 flex items-center justify-between"
+        >
+          <p>© 2025, by Kelompok 3. Untuk Tugas Rekayasa Perangkat Lunak</p>
+          <p>Didukung oleh Kemenkes</p>
+        </div>
       </div>
+    </footer>
 
-      <div>
-        <p class="font-semibold">Halodoc</p>
-        <ul class="mt-3 space-y-2 text-sm text-gray-600">
-          <li><a href="#" class="hover:text-pink-600 transition-colors">Tentang Kami</a></li>
-          <li><a href="/pages/articles.html" class="hover:text-pink-600 transition-colors">Kamus/Artikel Kesehatan</a></li>
-          <li><a href="/pages/pharmacy.html" class="hover:text-pink-600 transition-colors">Promo Toko Kesehatan</a></li>
-        </ul>
-      </div>
+    <script src="/js/main.js"></script>
+    <script>
+      // Enhanced JavaScript untuk Dashboard Dokter
+      document.addEventListener("DOMContentLoaded", function () {
+        const doctorSession = getDoctorSession();
 
-      <div>
-        <p class="font-semibold">Karier & Kolaborasi</p>
-        <ul class="mt-3 space-y-2 text-sm text-gray-600">
-          <li><a href="#" class="hover:text-pink-600 transition-colors">Karier</a></li>
-          <li><a href="#" class="hover:text-pink-600 transition-colors">Affiliate Program</a></li>
-          <li><a href="#" class="hover:text-pink-600 transition-colors">Bug Bounty</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="border-t">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 text-xs text-gray-500 flex items-center justify-between">
-        <p>© 2016–<span id="yearNow"></span>, Prototype akademik Kelompok 3. Tidak untuk komersial.</p>
-        <p>Dianjurkan (dummy) • Kemenkes</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="/js/main.js"></script>
-  <script>
-    // Enhanced JavaScript untuk Dashboard Dokter
-    document.addEventListener('DOMContentLoaded', function() {
-      const doctorSession = getDoctorSession();
-      
-      // Redirect jika belum login
-      if (!doctorSession) {
-        alert('Silakan login sebagai dokter terlebih dahulu.');
-        window.location.href = '/pages/doctor-login.html';
-        return;
-      }
-
-      // Update doctor info
-      document.getElementById('doctorName').textContent = doctorSession.name;
-      document.getElementById('doctorNameNav').textContent = doctorSession.name;
-      document.getElementById('doctorHospitalNav').textContent = doctorSession.hospital;
-      document.getElementById('mobileDoctorName').textContent = doctorSession.name;
-      document.getElementById('mobileDoctorHospital').textContent = doctorSession.hospital;
-
-      // Elements
-      const scheduleList = document.getElementById('scheduleList');
-      const scheduleForm = document.getElementById('scheduleForm');
-      const scheduleFormElement = document.getElementById('scheduleFormElement');
-      const scheduleFormTitle = document.getElementById('scheduleFormTitle');
-      const scheduleError = document.getElementById('scheduleError');
-      const scheduleErrorText = document.getElementById('scheduleErrorText');
-      const addScheduleBtn = document.getElementById('addScheduleBtn');
-      const cancelSchedule = document.getElementById('cancelSchedule');
-      const refreshSchedule = document.getElementById('refreshSchedule');
-      const patientHistory = document.getElementById('patientHistory');
-      const diagnosisForm = document.getElementById('diagnosisForm');
-      const selectPatient = document.getElementById('selectPatient');
-      const diagnosisSuccess = document.getElementById('diagnosisSuccess');
-      const logoutBtn = document.getElementById('logoutBtn');
-
-      // Data khusus dokter ini
-      const doctorId = doctorSession.email;
-      let doctorSchedules = JSON.parse(localStorage.getItem(`hl_doctor_schedules_${doctorId}`) || '[]');
-      let patientRecords = JSON.parse(localStorage.getItem(`hl_patient_records_${doctorId}`) || '[]');
-      
-      const dummyPatients = [
-        { id: 1, name: 'Siti Nurhaliza', lastVisit: '2024-01-15' },
-        { id: 2, name: 'Budi Santoso', lastVisit: '2024-01-14' },
-        { id: 3, name: 'Ani Wijaya', lastVisit: '2024-01-13' },
-        { id: 4, name: 'Rina Melati', lastVisit: '2024-01-12' }
-      ];
-
-      let editingScheduleId = null;
-
-      // Enhanced validation function
-      function validateSchedule(day, startTime, endTime, location, editingScheduleId = null) {
-        const errors = [];
-        
-        // Validasi format waktu
-        if (startTime >= endTime) {
-          errors.push("Jam selesai harus setelah jam mulai");
+        // Redirect jika belum login
+        if (!doctorSession) {
+          alert("Silakan login sebagai dokter terlebih dahulu.");
+          window.location.href = "/pages/doctor-login.html";
+          return;
         }
-        
-        // Validasi jadwal bentrok
-        const hasConflict = doctorSchedules.some(schedule => 
-          schedule.id !== editingScheduleId &&
-          schedule.day === day &&
-          ((startTime >= schedule.startTime && startTime < schedule.endTime) ||
-           (endTime > schedule.startTime && endTime <= schedule.endTime) ||
-           (startTime <= schedule.startTime && endTime >= schedule.endTime))
+
+        // Update doctor info
+        document.getElementById("doctorName").textContent = doctorSession.name;
+        document.getElementById("doctorNameNav").textContent =
+          doctorSession.name;
+        document.getElementById("doctorHospitalNav").textContent =
+          doctorSession.hospital;
+        document.getElementById("mobileDoctorName").textContent =
+          doctorSession.name;
+        document.getElementById("mobileDoctorHospital").textContent =
+          doctorSession.hospital;
+
+        // Elements
+        const scheduleList = document.getElementById("scheduleList");
+        const scheduleForm = document.getElementById("scheduleForm");
+        const scheduleFormElement = document.getElementById(
+          "scheduleFormElement"
         );
-        
-        if (hasConflict) {
-          errors.push("Jadwal bentrok dengan jadwal lain di hari yang sama");
-        }
-        
-        // Validasi lokasi
-        if (!location || location.length < 3) {
-          errors.push("Lokasi layanan harus diisi dengan benar");
-        }
-        
-        return errors;
-      }
+        const scheduleFormTitle = document.getElementById("scheduleFormTitle");
+        const scheduleError = document.getElementById("scheduleError");
+        const scheduleErrorText = document.getElementById("scheduleErrorText");
+        const addScheduleBtn = document.getElementById("addScheduleBtn");
+        const cancelSchedule = document.getElementById("cancelSchedule");
+        const refreshSchedule = document.getElementById("refreshSchedule");
+        const patientHistory = document.getElementById("patientHistory");
+        const diagnosisForm = document.getElementById("diagnosisForm");
+        const selectPatient = document.getElementById("selectPatient");
+        const diagnosisSuccess = document.getElementById("diagnosisSuccess");
+        const logoutBtn = document.getElementById("logoutBtn");
 
-      // Render jadwal
-      function renderSchedules() {
-        if (doctorSchedules.length === 0) {
-          scheduleList.innerHTML = `
+        // Data khusus dokter ini
+        const doctorId = doctorSession.email;
+        let doctorSchedules = JSON.parse(
+          localStorage.getItem(`hl_doctor_schedules_${doctorId}`) || "[]"
+        );
+        let patientRecords = JSON.parse(
+          localStorage.getItem(`hl_patient_records_${doctorId}`) || "[]"
+        );
+
+        const dummyPatients = [
+          { id: 1, name: "Siti Nurhaliza", lastVisit: "2024-01-15" },
+          { id: 2, name: "Budi Santoso", lastVisit: "2024-01-14" },
+          { id: 3, name: "Ani Wijaya", lastVisit: "2024-01-13" },
+          { id: 4, name: "Rina Melati", lastVisit: "2024-01-12" },
+        ];
+
+        let editingScheduleId = null;
+
+        // Enhanced validation function
+        function validateSchedule(
+          day,
+          startTime,
+          endTime,
+          location,
+          editingScheduleId = null
+        ) {
+          const errors = [];
+
+          // Validasi format waktu
+          if (startTime >= endTime) {
+            errors.push("Jam selesai harus setelah jam mulai");
+          }
+
+          // Validasi jadwal bentrok
+          const hasConflict = doctorSchedules.some(
+            (schedule) =>
+              schedule.id !== editingScheduleId &&
+              schedule.day === day &&
+              ((startTime >= schedule.startTime &&
+                startTime < schedule.endTime) ||
+                (endTime > schedule.startTime && endTime <= schedule.endTime) ||
+                (startTime <= schedule.startTime &&
+                  endTime >= schedule.endTime))
+          );
+
+          if (hasConflict) {
+            errors.push("Jadwal bentrok dengan jadwal lain di hari yang sama");
+          }
+
+          // Validasi lokasi
+          if (!location || location.length < 3) {
+            errors.push("Lokasi layanan harus diisi dengan benar");
+          }
+
+          return errors;
+        }
+
+        // Render jadwal
+        function renderSchedules() {
+          if (doctorSchedules.length === 0) {
+            scheduleList.innerHTML = `
             <div class="text-center py-8 text-gray-500">
               <p>Belum ada jadwal praktik.</p>
               <p class="text-sm mt-1">Klik "Tambah Jadwal" untuk menambah jadwal.</p>
             </div>
           `;
-          return;
-        }
+            return;
+          }
 
-        scheduleList.innerHTML = doctorSchedules.map(schedule => `
-          <div class="flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:border-pink-200 transition-colors" data-schedule-id="${schedule.id}">
+          scheduleList.innerHTML = doctorSchedules
+            .map(
+              (schedule) => `
+          <div class="flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:border-pink-200 transition-colors" data-schedule-id="${
+            schedule.id
+          }">
             <div class="flex-1">
               <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-full bg-gradient-to-br from-pink-100 to-rose-100 flex items-center justify-center">
-                  <span class="text-pink-600 font-semibold text-sm">${schedule.day.charAt(0).toUpperCase()}</span>
+                  <span class="text-pink-600 font-semibold text-sm">${schedule.day
+                    .charAt(0)
+                    .toUpperCase()}</span>
                 </div>
                 <div class="flex-1">
-                  <p class="font-semibold text-gray-900">${schedule.day.charAt(0).toUpperCase() + schedule.day.slice(1)}</p>
-                  <p class="text-sm text-gray-600">${schedule.startTime} - ${schedule.endTime}</p>
-                  <p class="text-xs text-gray-500 mt-1">📍 ${schedule.location}</p>
+                  <p class="font-semibold text-gray-900">${
+                    schedule.day.charAt(0).toUpperCase() + schedule.day.slice(1)
+                  }</p>
+                  <p class="text-sm text-gray-600">${schedule.startTime} - ${
+                schedule.endTime
+              }</p>
+                  <p class="text-xs text-gray-500 mt-1">📍 ${
+                    schedule.location
+                  }</p>
                 </div>
               </div>
             </div>
             <div class="flex gap-2">
-              <button class="edit-schedule px-3 py-2 rounded-lg border border-gray-300 text-gray-700 text-xs hover:bg-gray-50 transition-colors" data-id="${schedule.id}">Edit</button>
-              <button class="delete-schedule px-3 py-2 rounded-lg bg-red-50 text-red-600 text-xs hover:bg-red-100 transition-colors" data-id="${schedule.id}">Hapus</button>
+              <button class="edit-schedule px-3 py-2 rounded-lg border border-gray-300 text-gray-700 text-xs hover:bg-gray-50 transition-colors" data-id="${
+                schedule.id
+              }">Edit</button>
+              <button class="delete-schedule px-3 py-2 rounded-lg bg-red-50 text-red-600 text-xs hover:bg-red-100 transition-colors" data-id="${
+                schedule.id
+              }">Hapus</button>
             </div>
           </div>
-        `).join('');
-      }
+        `
+            )
+            .join("");
+        }
 
-      // Render riwayat pasien
-      function renderPatientHistory() {
-        if (patientRecords.length === 0) {
-          patientHistory.innerHTML = `
+        // Render riwayat pasien
+        function renderPatientHistory() {
+          if (patientRecords.length === 0) {
+            patientHistory.innerHTML = `
             <div class="text-center py-8 text-gray-500">
               <p>Belum ada riwayat konsultasi.</p>
             </div>
           `;
-          return;
-        }
+            return;
+          }
 
-        patientHistory.innerHTML = patientRecords.map(record => `
+          patientHistory.innerHTML = patientRecords
+            .map(
+              (record) => `
           <div class="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0">
             <div class="flex items-start justify-between mb-2">
               <div>
                 <p class="font-semibold text-gray-900">${record.patientName}</p>
-                <p class="text-sm text-gray-600">${new Date(record.consultationDate).toLocaleDateString('id-ID')}</p>
+                <p class="text-sm text-gray-600">${new Date(
+                  record.consultationDate
+                ).toLocaleDateString("id-ID")}</p>
               </div>
               <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800 font-medium">Selesai</span>
             </div>
-            <p class="text-sm text-gray-700 mb-1"><strong>Diagnosis:</strong> ${record.diagnosis}</p>
-            <p class="text-sm text-gray-700"><strong>Resep:</strong> ${record.prescription}</p>
+            <p class="text-sm text-gray-700 mb-1"><strong>Diagnosis:</strong> ${
+              record.diagnosis
+            }</p>
+            <p class="text-sm text-gray-700"><strong>Resep:</strong> ${
+              record.prescription
+            }</p>
           </div>
-        `).join('');
-      }
-
-      // Populate patient dropdown
-      function populatePatientDropdown() {
-        selectPatient.innerHTML = '<option value="">Pilih Pasien</option>' +
-          dummyPatients.map(patient => 
-            `<option value="${patient.id}">${patient.name}</option>`
-          ).join('');
-      }
-
-      // Show schedule form
-      function showScheduleForm(schedule = null) {
-        editingScheduleId = schedule ? schedule.id : null;
-        
-        if (schedule) {
-          scheduleFormTitle.textContent = 'Edit Jadwal Praktik';
-          document.getElementById('scheduleDay').value = schedule.day;
-          document.getElementById('scheduleStart').value = schedule.startTime;
-          document.getElementById('scheduleEnd').value = schedule.endTime;
-          document.getElementById('scheduleLocation').value = schedule.location;
-        } else {
-          scheduleFormTitle.textContent = 'Tambah Jadwal Baru';
-          scheduleFormElement.reset();
+        `
+            )
+            .join("");
         }
-        
-        scheduleForm.classList.remove('hidden');
-        scheduleError.classList.add('hidden');
-      }
 
-      // Hide schedule form
-      function hideScheduleForm() {
-        scheduleForm.classList.add('hidden');
-        editingScheduleId = null;
-        scheduleError.classList.add('hidden');
-      }
-
-      // Event handlers
-      addScheduleBtn.addEventListener('click', () => showScheduleForm());
-      cancelSchedule.addEventListener('click', hideScheduleForm);
-
-      refreshSchedule.addEventListener('click', () => {
-        doctorSchedules = JSON.parse(localStorage.getItem(`hl_doctor_schedules_${doctorId}`) || '[]');
-        patientRecords = JSON.parse(localStorage.getItem(`hl_patient_records_${doctorId}`) || '[]');
-        renderSchedules();
-        renderPatientHistory();
-        showToast('Data diperbarui');
-      });
-
-      scheduleFormElement.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const day = document.getElementById('scheduleDay').value;
-        const startTime = document.getElementById('scheduleStart').value;
-        const endTime = document.getElementById('scheduleEnd').value;
-        const location = document.getElementById('scheduleLocation').value.trim();
-        
-        // Validasi required fields
-        if (!day || !startTime || !endTime || !location) {
-          scheduleErrorText.textContent = 'Harap lengkapi semua field jadwal.';
-          scheduleError.classList.remove('hidden');
-          return;
+        // Populate patient dropdown
+        function populatePatientDropdown() {
+          selectPatient.innerHTML =
+            '<option value="">Pilih Pasien</option>' +
+            dummyPatients
+              .map(
+                (patient) =>
+                  `<option value="${patient.id}">${patient.name}</option>`
+              )
+              .join("");
         }
-        
-        // Enhanced validation
-        const validationErrors = validateSchedule(day, startTime, endTime, location, editingScheduleId);
-        if (validationErrors.length > 0) {
-          scheduleErrorText.textContent = validationErrors.join(', ');
-          scheduleError.classList.remove('hidden');
-          return;
-        }
-        
-        const scheduleData = {
-          id: editingScheduleId || Date.now(),
-          day: day,
-          startTime: startTime,
-          endTime: endTime,
-          location: location,
-          doctorId: doctorId,
-          createdAt: new Date().toISOString()
-        };
-        
-        if (editingScheduleId) {
-          const index = doctorSchedules.findIndex(s => s.id === editingScheduleId);
-          doctorSchedules[index] = scheduleData;
-          showToast('Jadwal berhasil diperbarui');
-        } else {
-          doctorSchedules.push(scheduleData);
-          showToast('Jadwal berhasil ditambahkan');
-        }
-        
-        localStorage.setItem(`hl_doctor_schedules_${doctorId}`, JSON.stringify(doctorSchedules));
-        renderSchedules();
-        hideScheduleForm();
-      });
 
-      // Edit/Delete schedule handlers
-      document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('edit-schedule')) {
-          const scheduleId = parseInt(e.target.dataset.id);
-          const schedule = doctorSchedules.find(s => s.id === scheduleId);
-          if (schedule) showScheduleForm(schedule);
+        // Show schedule form
+        function showScheduleForm(schedule = null) {
+          editingScheduleId = schedule ? schedule.id : null;
+
+          if (schedule) {
+            scheduleFormTitle.textContent = "Edit Jadwal Praktik";
+            document.getElementById("scheduleDay").value = schedule.day;
+            document.getElementById("scheduleStart").value = schedule.startTime;
+            document.getElementById("scheduleEnd").value = schedule.endTime;
+            document.getElementById("scheduleLocation").value =
+              schedule.location;
+          } else {
+            scheduleFormTitle.textContent = "Tambah Jadwal Baru";
+            scheduleFormElement.reset();
+          }
+
+          scheduleForm.classList.remove("hidden");
+          scheduleError.classList.add("hidden");
         }
-        
-        if (e.target.classList.contains('delete-schedule')) {
-          const scheduleId = parseInt(e.target.dataset.id);
-          
-          const hasConsultation = patientRecords.some(record => 
-            record.scheduleId === scheduleId
+
+        // Hide schedule form
+        function hideScheduleForm() {
+          scheduleForm.classList.add("hidden");
+          editingScheduleId = null;
+          scheduleError.classList.add("hidden");
+        }
+
+        // Event handlers
+        addScheduleBtn.addEventListener("click", () => showScheduleForm());
+        cancelSchedule.addEventListener("click", hideScheduleForm);
+
+        refreshSchedule.addEventListener("click", () => {
+          doctorSchedules = JSON.parse(
+            localStorage.getItem(`hl_doctor_schedules_${doctorId}`) || "[]"
           );
-          
-          if (hasConsultation) {
-            scheduleErrorText.textContent = 'Tidak dapat menghapus jadwal karena ada sesi konsultasi yang sudah terjadwal.';
-            scheduleError.classList.remove('hidden');
+          patientRecords = JSON.parse(
+            localStorage.getItem(`hl_patient_records_${doctorId}`) || "[]"
+          );
+          renderSchedules();
+          renderPatientHistory();
+          showToast("Data diperbarui");
+        });
+
+        scheduleFormElement.addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          const day = document.getElementById("scheduleDay").value;
+          const startTime = document.getElementById("scheduleStart").value;
+          const endTime = document.getElementById("scheduleEnd").value;
+          const location = document
+            .getElementById("scheduleLocation")
+            .value.trim();
+
+          // Validasi required fields
+          if (!day || !startTime || !endTime || !location) {
+            scheduleErrorText.textContent =
+              "Harap lengkapi semua field jadwal.";
+            scheduleError.classList.remove("hidden");
             return;
           }
-          
-          if (confirm('Hapus jadwal ini?')) {
-            doctorSchedules = doctorSchedules.filter(s => s.id !== scheduleId);
-            localStorage.setItem(`hl_doctor_schedules_${doctorId}`, JSON.stringify(doctorSchedules));
-            renderSchedules();
-            showToast('Jadwal berhasil dihapus');
+
+          // Enhanced validation
+          const validationErrors = validateSchedule(
+            day,
+            startTime,
+            endTime,
+            location,
+            editingScheduleId
+          );
+          if (validationErrors.length > 0) {
+            scheduleErrorText.textContent = validationErrors.join(", ");
+            scheduleError.classList.remove("hidden");
+            return;
           }
-        }
-      });
 
-      // Diagnosis form handler
-      diagnosisForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const patientId = parseInt(selectPatient.value);
-        const diagnosis = document.getElementById('diagnosisText').value.trim();
-        const prescription = document.getElementById('prescriptionText').value.trim();
-        
-        if (!patientId || !diagnosis || !prescription) {
-          alert('Harap lengkapi semua field diagnosis dan resep.');
-          return;
-        }
-        
-        const patient = dummyPatients.find(p => p.id === patientId);
-        
-        const record = {
-          id: Date.now(),
-          patientId: patientId,
-          patientName: patient.name,
-          diagnosis: diagnosis,
-          prescription: prescription,
-          consultationDate: new Date().toISOString(),
-          doctorId: doctorId,
-          doctorName: doctorSession.name
-        };
-        
-        patientRecords.push(record);
-        localStorage.setItem(`hl_patient_records_${doctorId}`, JSON.stringify(patientRecords));
-        
-        diagnosisForm.reset();
-        diagnosisSuccess.classList.remove('hidden');
-        renderPatientHistory();
-        
-        setTimeout(() => {
-          diagnosisSuccess.classList.add('hidden');
-        }, 3000);
-        
-        showToast('Diagnosis dan resep berhasil disimpan');
-      });
+          const scheduleData = {
+            id: editingScheduleId || Date.now(),
+            day: day,
+            startTime: startTime,
+            endTime: endTime,
+            location: location,
+            doctorId: doctorId,
+            createdAt: new Date().toISOString(),
+          };
 
-      logoutBtn.addEventListener('click', () => {
-        if (confirm('Keluar dari dashboard dokter?')) {
-          clearDoctorSession();
-          showToast('Logout berhasil');
+          if (editingScheduleId) {
+            const index = doctorSchedules.findIndex(
+              (s) => s.id === editingScheduleId
+            );
+            doctorSchedules[index] = scheduleData;
+            showToast("Jadwal berhasil diperbarui");
+          } else {
+            doctorSchedules.push(scheduleData);
+            showToast("Jadwal berhasil ditambahkan");
+          }
+
+          localStorage.setItem(
+            `hl_doctor_schedules_${doctorId}`,
+            JSON.stringify(doctorSchedules)
+          );
+          renderSchedules();
+          hideScheduleForm();
+        });
+
+        // Edit/Delete schedule handlers
+        document.addEventListener("click", (e) => {
+          if (e.target.classList.contains("edit-schedule")) {
+            const scheduleId = parseInt(e.target.dataset.id);
+            const schedule = doctorSchedules.find((s) => s.id === scheduleId);
+            if (schedule) showScheduleForm(schedule);
+          }
+
+          if (e.target.classList.contains("delete-schedule")) {
+            const scheduleId = parseInt(e.target.dataset.id);
+
+            const hasConsultation = patientRecords.some(
+              (record) => record.scheduleId === scheduleId
+            );
+
+            if (hasConsultation) {
+              scheduleErrorText.textContent =
+                "Tidak dapat menghapus jadwal karena ada sesi konsultasi yang sudah terjadwal.";
+              scheduleError.classList.remove("hidden");
+              return;
+            }
+
+            if (confirm("Hapus jadwal ini?")) {
+              doctorSchedules = doctorSchedules.filter(
+                (s) => s.id !== scheduleId
+              );
+              localStorage.setItem(
+                `hl_doctor_schedules_${doctorId}`,
+                JSON.stringify(doctorSchedules)
+              );
+              renderSchedules();
+              showToast("Jadwal berhasil dihapus");
+            }
+          }
+        });
+
+        // Diagnosis form handler
+        diagnosisForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          const patientId = parseInt(selectPatient.value);
+          const diagnosis = document
+            .getElementById("diagnosisText")
+            .value.trim();
+          const prescription = document
+            .getElementById("prescriptionText")
+            .value.trim();
+
+          if (!patientId || !diagnosis || !prescription) {
+            alert("Harap lengkapi semua field diagnosis dan resep.");
+            return;
+          }
+
+          const patient = dummyPatients.find((p) => p.id === patientId);
+
+          const record = {
+            id: Date.now(),
+            patientId: patientId,
+            patientName: patient.name,
+            diagnosis: diagnosis,
+            prescription: prescription,
+            consultationDate: new Date().toISOString(),
+            doctorId: doctorId,
+            doctorName: doctorSession.name,
+          };
+
+          patientRecords.push(record);
+          localStorage.setItem(
+            `hl_patient_records_${doctorId}`,
+            JSON.stringify(patientRecords)
+          );
+
+          diagnosisForm.reset();
+          diagnosisSuccess.classList.remove("hidden");
+          renderPatientHistory();
+
           setTimeout(() => {
-            window.location.href = '/pages/doctor-login.html';
-          }, 1000);
-        }
-      });
+            diagnosisSuccess.classList.add("hidden");
+          }, 3000);
 
-      // Initialize
-      renderSchedules();
-      renderPatientHistory();
-      populatePatientDropdown();
-    });
-  </script>
-</body>
+          showToast("Diagnosis dan resep berhasil disimpan");
+        });
+
+        logoutBtn.addEventListener("click", () => {
+          if (confirm("Keluar dari dashboard dokter?")) {
+            clearDoctorSession();
+            showToast("Logout berhasil");
+            setTimeout(() => {
+              window.location.href = "/pages/doctor-login.html";
+            }, 1000);
+          }
+        });
+
+        // Initialize
+        renderSchedules();
+        renderPatientHistory();
+        populatePatientDropdown();
+      });
+    </script>
+  </body>
 </html>
