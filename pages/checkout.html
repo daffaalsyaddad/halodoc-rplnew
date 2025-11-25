@@ -9,28 +9,71 @@
     <link rel="shortcut icon" href="../assets/icons/favicon2.svg" />
     <style>
       /* CSS untuk memastikan footer mentok ke bawah */
-      html, body {
+      html,
+      body {
         height: 100%;
         margin: 0;
         padding: 0;
       }
-      
+
       body {
         display: flex;
         flex-direction: column;
         min-height: 100vh;
       }
-      
+
       main {
         flex: 1 0 auto;
       }
-      
+
       footer {
         flex-shrink: 0;
+      }
+
+      /* Style untuk pesan error */
+      .error-message {
+        color: #dc2626;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+        display: none;
+      }
+
+      .input-error {
+        border-color: #dc2626 !important;
+      }
+
+      /* Style untuk notifikasi sukses */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 20px;
+        border-radius: 12px;
+        color: white;
+        font-weight: 500;
+        z-index: 1000;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        transform: translateX(150%);
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .notification.show {
+        transform: translateX(0);
+      }
+
+      .notification.success {
+        background-color: #10b981;
+      }
+
+      .notification.error {
+        background-color: #ef4444;
       }
     </style>
   </head>
   <body class="bg-gray-50 text-gray-900" data-page="checkout">
+    <!-- Notifikasi -->
+    <div id="notification" class="notification"></div>
+
     <!-- HEADER -->
     <header class="border-b bg-white">
       <div
@@ -76,7 +119,6 @@
         <!-- KIRI: langkah-langkah -->
         <div class="lg:col-span-2 space-y-6">
           <!-- 1. CEK RESEP DOKTER -->
-          
 
           <!-- 2. ALAMAT & LOKASI PENGANTARAN -->
           <section class="mt-8 bg-white rounded-2xl border p-6">
@@ -96,7 +138,11 @@
                   id="receiverName"
                   type="text"
                   class="w-full px-4 py-2 rounded-xl border border-gray-300"
+                  required
                 />
+                <div id="receiverNameError" class="error-message">
+                  Nama penerima harus diisi (minimal 2 karakter)
+                </div>
               </div>
               <div>
                 <label
@@ -108,19 +154,27 @@
                   id="receiverPhone"
                   type="tel"
                   class="w-full px-4 py-2 rounded-xl border border-gray-300"
+                  required
                 />
+                <div id="receiverPhoneError" class="error-message">
+                  Nomor telepon harus angka (minimal 10 digit)
+                </div>
               </div>
             </div>
 
             <div class="mt-4">
               <label class="block text-sm font-medium mb-1" for="addressFull"
                 >Alamat Lengkap</label
-                >
+              >
               <textarea
                 id="addressFull"
                 rows="3"
                 class="w-full px-4 py-2 rounded-xl border border-gray-300"
+                required
               ></textarea>
+              <div id="addressFullError" class="error-message">
+                Alamat lengkap harus diisi (minimal 10 karakter)
+              </div>
             </div>
 
             <div class="mt-4 grid md:grid-cols-2 gap-4">
@@ -132,7 +186,11 @@
                   id="city"
                   type="text"
                   class="w-full px-4 py-2 rounded-xl border border-gray-300"
+                  required
                 />
+                <div id="cityError" class="error-message">
+                  Kota/Kabupaten harus diisi
+                </div>
               </div>
               <div>
                 <label class="block text-sm font-medium mb-1" for="courierNote"
@@ -166,6 +224,7 @@
                   name="paymentMethod"
                   value="qris"
                   class="text-pink-600 focus:ring-pink-500"
+                  required
                 />
                 <div>
                   <p class="text-sm font-semibold">QRIS</p>
@@ -182,6 +241,7 @@
                   name="paymentMethod"
                   value="ewallet"
                   class="text-pink-600 focus:ring-pink-500"
+                  required
                 />
                 <div>
                   <p class="text-sm font-semibold">E-Wallet</p>
@@ -198,6 +258,7 @@
                   name="paymentMethod"
                   value="debit"
                   class="text-pink-600 focus:ring-pink-500"
+                  required
                 />
                 <div>
                   <p class="text-sm font-semibold">Kartu Debit/Kredit</p>
@@ -212,12 +273,16 @@
                   name="paymentMethod"
                   value="transfer"
                   class="text-pink-600 focus:ring-pink-500"
+                  required
                 />
                 <div>
                   <p class="text-sm font-semibold">Transfer Bank</p>
                   <p class="text-xs text-gray-500">BCA, BRI, Mandiri, BNI</p>
                 </div>
               </label>
+            </div>
+            <div id="paymentMethodError" class="error-message mt-2">
+              Pilih metode pembayaran
             </div>
           </section>
         </div>
@@ -283,6 +348,140 @@
         <p>Didukung oleh Kemenkes</p>
       </div>
     </footer>
+
+    <script>
+      // Fungsi untuk menampilkan notifikasi
+      function showNotification(message, type = "success") {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.classList.add("show");
+
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+
+      // Fungsi validasi form
+      function validateForm() {
+        let isValid = true;
+
+        // Reset error states
+        document.querySelectorAll(".error-message").forEach((el) => {
+          el.style.display = "none";
+        });
+        document.querySelectorAll(".input-error").forEach((el) => {
+          el.classList.remove("input-error");
+        });
+
+        // Validasi Nama Penerima
+        const receiverName = document
+          .getElementById("receiverName")
+          .value.trim();
+        if (receiverName.length < 2) {
+          document.getElementById("receiverNameError").style.display = "block";
+          document.getElementById("receiverName").classList.add("input-error");
+          isValid = false;
+        }
+
+        // Validasi Nomor Telepon
+        const receiverPhone = document
+          .getElementById("receiverPhone")
+          .value.trim();
+        const phoneRegex = /^[0-9]{10,}$/;
+        if (!phoneRegex.test(receiverPhone)) {
+          document.getElementById("receiverPhoneError").style.display = "block";
+          document.getElementById("receiverPhone").classList.add("input-error");
+          isValid = false;
+        }
+
+        // Validasi Alamat Lengkap
+        const addressFull = document.getElementById("addressFull").value.trim();
+        if (addressFull.length < 10) {
+          document.getElementById("addressFullError").style.display = "block";
+          document.getElementById("addressFull").classList.add("input-error");
+          isValid = false;
+        }
+
+        // Validasi Kota/Kabupaten
+        const city = document.getElementById("city").value.trim();
+        if (city.length === 0) {
+          document.getElementById("cityError").style.display = "block";
+          document.getElementById("city").classList.add("input-error");
+          isValid = false;
+        }
+
+        // Validasi Metode Pembayaran
+        const paymentMethod = document.querySelector(
+          'input[name="paymentMethod"]:checked'
+        );
+        if (!paymentMethod) {
+          document.getElementById("paymentMethodError").style.display = "block";
+          isValid = false;
+        }
+
+        return isValid;
+      }
+
+      // Event listener untuk tombol konfirmasi
+      document
+        .getElementById("confirmPaymentBtn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+
+          if (validateForm()) {
+            // Jika semua validasi berhasil
+            showNotification(
+              "✅ Pembayaran berhasil! Pesanan Anda sedang diproses.",
+              "success"
+            );
+
+            // Reset form setelah 2 detik
+            setTimeout(() => {
+              document.getElementById("receiverName").value = "";
+              document.getElementById("receiverPhone").value = "";
+              document.getElementById("addressFull").value = "";
+              document.getElementById("city").value = "";
+              document.getElementById("courierNote").value = "";
+              document
+                .querySelectorAll('input[name="paymentMethod"]')
+                .forEach((radio) => {
+                  radio.checked = false;
+                });
+            }, 2000);
+          } else {
+            // Jika validasi gagal
+            showNotification(
+              "❌ Silakan periksa kembali data yang Anda masukkan.",
+              "error"
+            );
+          }
+        });
+
+      // Event listener untuk real-time validation (opsional)
+      document.querySelectorAll("input, textarea").forEach((input) => {
+        input.addEventListener("input", function () {
+          // Hapus error state saat user mulai mengetik
+          if (this.classList.contains("input-error")) {
+            this.classList.remove("input-error");
+            const errorId = this.id + "Error";
+            if (document.getElementById(errorId)) {
+              document.getElementById(errorId).style.display = "none";
+            }
+          }
+        });
+      });
+
+      // Event listener untuk radio buttons
+      document
+        .querySelectorAll('input[name="paymentMethod"]')
+        .forEach((radio) => {
+          radio.addEventListener("change", function () {
+            document.getElementById("paymentMethodError").style.display =
+              "none";
+          });
+        });
+    </script>
 
     <script src="/js/main.js"></script>
   </body>
