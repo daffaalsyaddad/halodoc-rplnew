@@ -7,6 +7,28 @@
     <link href="/dist/output.css" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon2.svg" />
     <link rel="shortcut icon" href="../assets/icons/favicon2.svg" />
+    <style>
+      /* CSS tambahan untuk memastikan footer mentok ke bawah */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      
+      main {
+        flex: 1 0 auto;
+      }
+      
+      footer {
+        flex-shrink: 0;
+      }
+    </style>
   </head>
   <body class="bg-white text-gray-900" data-page="depression-test">
     <header class="border-b">
@@ -184,7 +206,7 @@
       </div>
     </main>
 
-    <footer class="mt-16 border-t bg-gradient-to-b from-white to-rose-50">
+    <footer class="border-t bg-gradient-to-b from-white to-rose-50 w-full">
       <div
         class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8"
       >
@@ -193,7 +215,7 @@
             <div
               class="w-8 h-8 rounded-full bg-pink-600 grid place-items-center text-white font-bold"
             >
-              u
+              H
             </div>
             <span class="text-2xl font-semibold">halodoc</span>
           </div>
@@ -264,7 +286,7 @@
 
       <div class="border-t">
         <div
-          class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 text-xs text-gray-500 flex items-center justify-between"
+          class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 text-xs text-gray-500 flex flex-col md:flex-row items-center justify-between gap-2"
         >
           <p>© 2025, by Kelompok 3. Untuk Tugas Rekayasa Perangkat Lunak</p>
           <p>Didukung oleh Kemenkes</p>

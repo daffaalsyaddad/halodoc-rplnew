@@ -7,6 +7,28 @@
     <link href="/dist/output.css" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon2.svg" />
     <link rel="shortcut icon" href="../assets/icons/favicon2.svg" />
+    <style>
+      /* CSS untuk memastikan footer mentok ke bawah */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      
+      main {
+        flex: 1 0 auto;
+      }
+      
+      footer {
+        flex-shrink: 0;
+      }
+    </style>
   </head>
   <body class="bg-gray-50 text-gray-900" data-page="checkout">
     <!-- HEADER -->
@@ -54,58 +76,7 @@
         <!-- KIRI: langkah-langkah -->
         <div class="lg:col-span-2 space-y-6">
           <!-- 1. CEK RESEP DOKTER -->
-          <section
-            class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm"
-          >
-            <h2 class="text-lg font-semibold mb-2">1. Resep Dokter</h2>
-            <p class="text-sm text-gray-600 mb-4">
-              Beberapa obat memerlukan resep dokter. Pilih status resep Anda.
-            </p>
-
-            <div class="space-y-2">
-              <label class="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="hasPrescription"
-                  value="yes"
-                  class="text-pink-600 focus:ring-pink-500"
-                />
-                <span>Saya sudah memiliki resep dari dokter Halodoc</span>
-              </label>
-              <label class="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="hasPrescription"
-                  value="no"
-                  class="text-pink-600 focus:ring-pink-500"
-                />
-                <span>Saya belum memiliki resep</span>
-              </label>
-            </div>
-
-            <div id="prescriptionWarning" class="mt-4 hidden">
-              <div
-                class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-sm flex items-start gap-3"
-              >
-                <span>⚠️</span>
-                <div>
-                  <p class="font-semibold text-amber-800 mb-1">
-                    Resep diperlukan
-                  </p>
-                  <p class="text-amber-800">
-                    Untuk keamanan, Anda disarankan konsultasi dulu dengan
-                    dokter sebelum melanjutkan pembayaran.
-                  </p>
-                  <a
-                    href="/pages/doctors.html"
-                    class="inline-flex mt-3 px-3 py-1.5 rounded-lg bg-pink-600 text-white text-xs font-medium hover:bg-pink-700"
-                  >
-                    Konsultasi Dokter Sekarang
-                  </a>
-                </div>
-              </div>
-            </div>
-          </section>
+          
 
           <!-- 2. ALAMAT & LOKASI PENGANTARAN -->
           <section class="mt-8 bg-white rounded-2xl border p-6">
@@ -144,7 +115,7 @@
             <div class="mt-4">
               <label class="block text-sm font-medium mb-1" for="addressFull"
                 >Alamat Lengkap</label
-              >
+                >
               <textarea
                 id="addressFull"
                 rows="3"
@@ -304,9 +275,9 @@
       </div>
     </main>
 
-    <footer class="mt-16 border-t bg-gradient-to-b from-white to-rose-50">
+    <footer class="border-t bg-gradient-to-b from-white to-rose-50 w-full">
       <div
-        class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 text-xs text-gray-500 flex items-center justify-between"
+        class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 text-xs text-gray-500 flex flex-col md:flex-row items-center justify-between gap-2"
       >
         <p>© 2025, by Kelompok 3. Untuk Tugas Rekayasa Perangkat Lunak</p>
         <p>Didukung oleh Kemenkes</p>

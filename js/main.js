@@ -770,10 +770,25 @@ function mountSkeleton(holder, count = 6) {
 }
 
 /* Doctors page init */
-/* Doctors page init */
 (function doctorsPage() {
   if (!document.body.matches('[data-page="doctors"]')) return;
 
+  // ====== PHARMACY BANNER LOGIC ======
+  const hasPrescription = localStorage.getItem("hl_has_prescription");
+  const pharmacyBanner = document.getElementById("pharmacyBanner");
+  const backToPharmacyBtn = document.getElementById("backToPharmacyBtn");
+
+  if (hasPrescription === "false" && pharmacyBanner) {
+    pharmacyBanner.classList.remove("hidden");
+  }
+
+  // Tombol kembali ke pharmacy dengan status punya resep
+  backToPharmacyBtn?.addEventListener("click", () => {
+    localStorage.setItem("hl_has_prescription", "true");
+    window.location.href = "/pages/pharmacy.html";
+  });
+
+  // ====== EXISTING DOCTORS LOGIC ======
   const holder = document.querySelector("[data-skeleton-holder]");
   const search = document.querySelector(
     'input[placeholder*="Cari nama dokter"]'
@@ -1119,6 +1134,144 @@ function mountSkeleton(holder, count = 6) {
 })();
 
 /* ========= Pharmacy cart (localStorage) ========= */
+
+/* ========= Pharmacy Prescription Check ========= */
+(function pharmacyPrescriptionCheck() {
+  if (!document.body.matches('[data-page="pharmacy"]')) return;
+
+  const prescriptionModal = document.getElementById("prescriptionModal");
+  const hasPrescriptionBtn = document.getElementById("hasPrescriptionBtn");
+  const noPrescriptionBtn = document.getElementById("noPrescriptionBtn");
+  
+  // Data detail obat - SESUAI DENGAN OBAT DI PHARMACY.HTML
+  const medicineDetails = {
+    "sku-neurobion-10": {
+      name: "Neurobion Forte 10 Tablet",
+      usage: "Mengobati defisiensi vitamin B1, B6, dan B12, neuropati perifer",
+      sideEffects: "Mual, sakit kepala, diare ringan",
+      dosage: "1 tablet per hari setelah makan",
+      contraindications: "Hipersensitif terhadap vitamin B, penyakit ginjal berat",
+      price: "Rp25.000",
+      image: "https://id-test-11.slatic.net/p/29b3d9fb79437321334a76f2d9f3d617.jpg"
+    },
+    "sku-blackmores-skin": {
+      name: "Blackmores Skin",
+      usage: "Suplemen untuk kesehatan kulit, rambut, dan kuku",
+      sideEffects: "Urine mungkin berwarna kuning terang",
+      dosage: "1 kapsul per hari setelah makan",
+      contraindications: "Ibu hamil dan menyusui konsultasi dokter",
+      price: "Rp120.000",
+      image: "https://d2qjkwm11akmwu.cloudfront.net/products/687833_27-10-2025_14-56-6.webp"
+    },
+    "sku-blackmores-skin-2": {
+      name: "Blackmores Skin",
+      usage: "Suplemen untuk kesehatan kulit, rambut, dan kuku",
+      sideEffects: "Urine mungkin berwarna kuning terang",
+      dosage: "1 kapsul per hari setelah makan",
+      contraindications: "Ibu hamil dan menyusui konsultasi dokter",
+      price: "Rp120.000",
+      image: "https://d2qjkwm11akmwu.cloudfront.net/products/687833_27-10-2025_14-56-6.webp"
+    }
+    // Tambahkan data untuk obat lainnya jika ada...
+  };
+
+  // Cek status resep di localStorage
+  const hasPrescription = localStorage.getItem("hl_has_prescription");
+  
+  if (hasPrescription === null) {
+    // Tampilkan modal pilihan resep
+    prescriptionModal.classList.remove("hidden");
+  } else if (hasPrescription === "false") {
+    // Redirect ke doctors.html jika belum punya resep
+    window.location.href = "/pages/doctors.html";
+  }
+  // Jika hasPrescription === "true", biarkan user browsing obat
+
+  // Event handlers untuk modal resep
+  hasPrescriptionBtn.addEventListener("click", () => {
+    localStorage.setItem("hl_has_prescription", "true");
+    prescriptionModal.classList.add("hidden");
+    showToast("Silakan pilih obat sesuai resep dokter");
+  });
+
+  noPrescriptionBtn.addEventListener("click", () => {
+    localStorage.setItem("hl_has_prescription", "false");
+    prescriptionModal.classList.add("hidden");
+    showToast("Silakan konsultasi dengan dokter terlebih dahulu");
+    setTimeout(() => {
+      window.location.href = "/pages/doctors.html";
+    }, 1000);
+  });
+
+  // Fungsi untuk buka modal detail obat
+  function openMedicineDetail(medicineId) {
+    const detail = medicineDetails[medicineId];
+    if (!detail) {
+      console.warn("Detail obat tidak ditemukan untuk:", medicineId);
+      return;
+    }
+
+    const modal = document.getElementById("medicineDetailModal");
+    document.getElementById("medicineName").textContent = detail.name;
+    document.getElementById("medicineUsage").textContent = detail.usage;
+    document.getElementById("medicineSideEffects").textContent = detail.sideEffects;
+    document.getElementById("medicineDosage").textContent = detail.dosage;
+    document.getElementById("medicineContraindications").textContent = detail.contraindications;
+    document.getElementById("medicinePrice").textContent = detail.price;
+    
+    const imageEl = document.getElementById("medicineImage");
+    imageEl.style.backgroundImage = `url('${detail.image}')`;
+    
+    // Set data untuk tombol tambah ke keranjang
+    const addBtn = document.querySelector(".add-cart-detail");
+    addBtn.dataset.id = medicineId;
+    addBtn.dataset.name = detail.name;
+    addBtn.dataset.price = detail.price.replace("Rp", "").replace(".", "");
+    
+    modal.classList.remove("hidden");
+  }
+
+  // Event listener untuk klik card obat
+  document.addEventListener("click", (e) => {
+    // Klik card obat (bukan tombol tambah)
+    const card = e.target.closest(".rounded-2xl.border");
+    const addBtn = e.target.closest(".add-cart");
+    
+    if (card && !addBtn) {
+      const medicineId = card.querySelector(".add-cart")?.dataset.id;
+      if (medicineId) {
+        openMedicineDetail(medicineId);
+      }
+    }
+
+    // Tombol tutup modal detail
+    const closeBtn = e.target.closest(".close-medicine-detail");
+    if (closeBtn || e.target.id === "medicineDetailModal") {
+      document.getElementById("medicineDetailModal").classList.add("hidden");
+    }
+
+    // Tombol tambah dari modal detail
+    if (e.target.closest(".add-cart-detail")) {
+      const btn = e.target.closest(".add-cart-detail");
+      const { id, name, price } = btn.dataset;
+      
+      // Pastikan addToCart function tersedia
+      if (typeof addToCart === 'function') {
+        addToCart({ id, name, price });
+        document.getElementById("medicineDetailModal").classList.add("hidden");
+        showToast(`${name} ditambahkan ke keranjang`);
+      } else {
+        console.error("addToCart function tidak ditemukan");
+      }
+    }
+  });
+
+  // Debug: Log untuk memastikan function berjalan
+  console.log("Pharmacy prescription check loaded");
+})();
+
+
+
 const CART_KEY = "hl_cart_v1";
 
 const $cartBtn = document.getElementById("cartBtn");

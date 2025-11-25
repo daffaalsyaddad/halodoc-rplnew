@@ -42,8 +42,12 @@
             <a href="/pages/doctors.html" class="nav-link group relative">
               <span class="nav-text">Cari Dokter</span>
             </a>
-            <a href="/pages/pharmacy.html" class="nav-link group relative">
-              <span class="nav-text">Toko Kesehatan</span>
+            <a
+              href="/pages/pharmacy.html"
+              onclick="localStorage.removeItem('hl_has_prescription')"
+              class="flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm bg-white"
+            >
+              🛍️ <span>Toko Kesehatan</span>
             </a>
             <a href="/pages/articles.html" class="nav-link group relative">
               <span class="nav-text">Artikel</span>
@@ -161,9 +165,11 @@
           >
           <a
             href="/pages/pharmacy.html"
-            class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
-            >Toko Kesehatan</a
+            onclick="localStorage.removeItem('hl_has_prescription')"
+            class="flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm bg-white"
           >
+            🛍️ <span>Toko Kesehatan</span>
+          </a>
           <a
             href="/pages/articles.html"
             class="block py-3 px-4 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors font-medium"
@@ -274,9 +280,11 @@
         >
         <a
           href="/pages/pharmacy.html"
+          onclick="localStorage.removeItem('hl_has_prescription')"
           class="flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm bg-white"
-          >🛍️ <span>Toko Kesehatan</span></a
         >
+          🛍️ <span>Toko Kesehatan</span>
+        </a>
         <a
           href="#"
           class="flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm bg-white"
